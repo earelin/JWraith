@@ -1,0 +1,8 @@
+base_url:
+  dev_site: "http://webserver.dev/dev"
+  master_site: "http://webserver.dev/enso"
+paths_file: "urls.txt"
+workers: 1
+displays:
+  - 300x600
+  - 1280x1024
