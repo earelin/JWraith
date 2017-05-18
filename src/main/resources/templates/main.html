@@ -2,7 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <title>ENSO dummy tester</title>
+    <title>JWraith</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
@@ -11,7 +11,12 @@
       <div class="row page-header">
         <h1>List of screenshots <small data-th-text="${report_date}">taken today</small></h1>
       </div>
-        
+      <div class="row" data-th-each="page : ${pages}">
+        <h2 data-th-text="${page.path}">Page's URL</h2>
+        <div class="col-6-md" data-th-each="screen : ${page.">
+          
+        </div>
+      </div>
     </div>
   </body>
 </html>

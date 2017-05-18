@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  *
  * @author Xavier Carriba
  */
-public class JWraith {
+public class JWraith {  
   
   public static void main(String[] args) {
     String configurationFilePath = "configuration.yml";
@@ -52,19 +52,19 @@ public class JWraith {
 	launchSpider(configuration);
 	break;
       case "capture":
-	paths = loadPaths();
-	//launchScreenshots(configuration, configuration.getBaseDomain(), "base", paths);
-	//launchScreenshots(configuration, configuration.getCompareDomain(), "compare", paths);
-	ReportData report = launchDiffCalculationCapture(
-		configuration.getDirectory(), configuration.getDirectory(), paths);
-	lauchReportGenerator(report);
+	paths = loadPaths(configuration);
+	launchScreenshots(configuration, configuration.getBaseDomain(), "base", paths);
+	launchScreenshots(configuration, configuration.getCompareDomain(), "compare", paths);
+//	ReportData report = launchDiffCalculationCapture(
+//		configuration.getDirectory(), configuration.getDirectory(), paths);
+//	lauchReportGenerator(report);
 	break;
       case "history":
-	paths = loadPaths();
+	paths = loadPaths(configuration);
 	launchScreenshots(configuration, configuration.getBaseDomain(), "base", paths);
 	break;
       case "latest":
-	paths = loadPaths();
+	paths = loadPaths(configuration);
 	launchScreenshots(configuration, configuration.getBaseDomain(), "compare", paths);
 	break;
       default:
@@ -72,9 +72,9 @@ public class JWraith {
     }
   }
   
-  private static List<String> loadPaths() {
+  private static List<String> loadPaths(Configuration configuration) {
     List<String> paths = new ArrayList<>();
-    try (Stream<String> stream = Files.lines(Paths.get("urls.txt"))) {
+    try (Stream<String> stream = Files.lines(Paths.get(configuration.getSpiderFile()))) {
       String[] urls = stream.toArray(String[]::new);
       for (String url : urls) {
 	paths.add(url);

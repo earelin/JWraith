@@ -1,6 +1,5 @@
 package com.ubm.jwraith.screenshots;
 
-import com.ubm.jwraith.crawler.CrawlerWorker;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -47,8 +46,7 @@ public class ScreenshotsWorker implements Runnable  {
     caps.setCapability("takesScreenshot", true);  
     caps.setCapability(
       PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
-      "/usr/local/bin/phantomjs"
-    );
+      "/usr/local/bin/phantomjs");
     driver = new PhantomJSDriver(caps);
   }
   
@@ -63,24 +61,18 @@ public class ScreenshotsWorker implements Runnable  {
 
   public void crawl() throws InterruptedException {
     int i = 0;
-    int waitingTime = 0;
-    do {
-      if (pendingUrls.isEmpty()) {	
-	Thread.sleep(100);
-	waitingTime++;	
-      } else {
-	String url = pendingUrls.take();
-	processUrl(url);
-	if (i == 50) {
-	  driver.quit();
-	  driver = new PhantomJSDriver(caps);
-	  i = 0;
-	}
-	else {
-	  i++;
-	}
+    while(!pendingUrls.isEmpty()) {      
+      String url = pendingUrls.take();
+      processUrl(url);
+      if (i == 100) {
+	driver.quit();
+	driver = new PhantomJSDriver(caps);
+	i = 0;
       }
-    } while(waitingTime < 30);
+      else {
+	i++;
+      }
+    }
     driver.quit();
   }
   
@@ -88,7 +80,7 @@ public class ScreenshotsWorker implements Runnable  {
     String pathFolder = WebsiteScreenshots.generatePathFolderName(path);
     File f = new File(folder + "/" + pathFolder);
     if(!f.exists()) { 
-      f.mkdir();
+      f.mkdirs();
     }
     
     for (int screenWidth : screenWidths) {

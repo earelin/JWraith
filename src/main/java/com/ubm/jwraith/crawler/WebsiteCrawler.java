@@ -65,29 +65,4 @@ public class WebsiteCrawler {
     return new ArrayList(checkedUrls);
   }
   
-//  public void processUrl(String path) {
-//    driver.get(domain + path);
-//    List<WebElement> elements = driver.findElements(By.tagName("a"));
-//    
-//    checkedUrls.add(path);    
-//    
-//    for (WebElement element : elements) {
-//      String url = element.getAttribute("href");
-//      if (url != null && url.startsWith(domain)) {
-//	int hashIndex = url.indexOf('#');
-//	
-//	if (hashIndex != -1) {
-//	  url = url.substring(0, hashIndex);
-//	}
-//	
-//	url = url.substring(domain.length());
-//	
-//	if (!(checkedUrls.contains(url) || pendingUrls.contains(url))) {
-//	  pendingUrls.add(url);
-//	  System.out.println(url);
-//	}
-//      }
-//    }
-//  }
-  
 }

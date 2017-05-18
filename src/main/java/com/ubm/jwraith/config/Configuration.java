@@ -27,7 +27,7 @@ public class Configuration {
   private String historyDir = "shots_history";
   private String mode;
   private List<String> spiderSkips;
-  private String spiderFile;
+  private String pathsFile;
   private int thumbnailWidth = 300;
   private int thumbnailHeight = 200;
 
@@ -87,8 +87,8 @@ public class Configuration {
       throw new ConfigurationFileException("Missing displays key on configuration file.");
     }
     
-    if (configMap.containsKey("spider_file")) {
-      spiderFile = (String) configMap.get("spider_file");
+    if (configMap.containsKey("paths_file")) {
+      pathsFile = (String) configMap.get("paths_file");
     }
     
     if (configMap.containsKey("spider_skips")) {
@@ -142,7 +142,7 @@ public class Configuration {
   }
 
   public String getSpiderFile() {
-    return spiderFile;
+    return pathsFile;
   }
 
   public int getThumbnailWidth() {
