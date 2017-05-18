@@ -57,7 +57,7 @@ public class ScreenshotsWorker implements Runnable  {
     try {
       crawl();
     } catch (InterruptedException ex) {
-      Logger.getLogger(CrawlerWorker.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(ScreenshotsWorker.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
 
@@ -95,7 +95,7 @@ public class ScreenshotsWorker implements Runnable  {
       driver.manage().window().setSize(new Dimension(screenWidth, (int) screenWidth * (16 / 9)));
       driver.get(domain + path);            
       
-      String fileName = screenWidth + "_" + domainLabel + ".png";
+      String fileName = WebsiteScreenshots.generateFileName(screenWidth, domainLabel);
       File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
       try {
 	FileUtils.copyFile(scrFile, new File(folder + "/" + pathFolder + "/" + fileName));

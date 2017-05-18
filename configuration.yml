@@ -18,6 +18,10 @@ spider_skips:
   - "^/ajax/.*"
   - "^/calendar/ical/.*"
 
+reports:
+  thumbnail_width: 300
+  thumbnail_height: 200
+
 #paths:
 #  home: /
 #  exhibitors: /exhibitors

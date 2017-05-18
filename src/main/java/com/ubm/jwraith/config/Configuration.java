@@ -28,6 +28,8 @@ public class Configuration {
   private String mode;
   private List<String> spiderSkips;
   private String spiderFile;
+  private int thumbnailWidth = 300;
+  private int thumbnailHeight = 200;
 
   public static Configuration getInstance() {
     if (instance == null) {
@@ -141,6 +143,14 @@ public class Configuration {
 
   public String getSpiderFile() {
     return spiderFile;
+  }
+
+  public int getThumbnailWidth() {
+    return thumbnailWidth;
+  }
+
+  public int getThumbnailHeight() {
+    return thumbnailHeight;
   }
 
 }

@@ -8,11 +8,12 @@ import java.util.List;
  *
  * @author Xavier Carriba
  */
-class PageResult implements Comparable<PageResult> {
+public class PageReport implements Comparable<PageReport> {
+  private String title;
   private String path;
-  private List<DisplayResult> displays = new ArrayList<>();
+  private List<DisplayReport> displays = new ArrayList<>();
 
-  public PageResult(String path) {
+  public PageReport(String path) {
     this.path = path;
   }
   
@@ -20,18 +21,18 @@ class PageResult implements Comparable<PageResult> {
     float sumDiff = 0;
     int i;
     for (i = 0; i < displays.size(); i++) {
-      DisplayResult displayResult = displays.get(i);
+      DisplayReport displayResult = displays.get(i);
       sumDiff += displayResult.getDiffValue();
     }
     return i == 0 ? 0 : sumDiff / i;
   }
   
-  public void addDisplayResult(DisplayResult result) {
+  public void addDisplayResult(DisplayReport result) {
     displays.add(result);    
   }
 
-  public List<DisplayResult> getDisplays() {
-    displays.sort(DisplayResult.Comparators.WIDTH);
+  public List<DisplayReport> getDisplays() {
+    displays.sort(DisplayReport.Comparators.WIDTH);
     return displays;
   }
 
@@ -44,13 +45,22 @@ class PageResult implements Comparable<PageResult> {
   }
 
   @Override
-  public int compareTo(PageResult o) {
+  public int compareTo(PageReport o) {
     return Comparators.DIFF.compare(this, o);
   }
   
   public static class Comparators {
-    public static final Comparator<PageResult> DIFF =
-	  (PageResult o1, PageResult o2)
+    public static final Comparator<PageReport> DIFF =
+	  (PageReport o1, PageReport o2)
 		  -> Float.compare(o1.getAverangeDiff(), o2.getAverangeDiff());
   }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+  
 }

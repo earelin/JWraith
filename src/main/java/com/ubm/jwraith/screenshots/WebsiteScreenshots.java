@@ -37,14 +37,14 @@ public class WebsiteScreenshots {
     
     BlockingQueue<String> pendingUrls = new LinkedBlockingQueue<>(paths);
     
-    // Generate screenshots
+    // Generate screenshots threads
     Thread[] workers = new Thread[configuration.getWorkers()];
     for (int i = 0; i < configuration.getWorkers(); i++) {
       workers[i] = new Thread(new ScreenshotsWorker(domain, domainLabel, folder, configuration.getScreenWidths(), pendingUrls));
       workers[i].start();
     }
     
-    boolean workersAlive = false;
+    boolean workersAlive;
     do {
       workersAlive = false;
       for (Thread worker : workers) {
@@ -70,6 +70,10 @@ public class WebsiteScreenshots {
       folderName = path.replace("/", "__");
     }
     return folderName;
+  }
+  
+  public static String generateFileName(int screenWidth, String domainLabel) {
+    return screenWidth + "_" + domainLabel + ".png";
   }
   
 }

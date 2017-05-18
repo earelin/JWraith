@@ -9,24 +9,28 @@ import java.util.List;
  *
  * @author Xavier Carriba
  */
-class ReportResult {
+public class ReportData {
   
   private Date date;
-  private List<PageResult> pages = new ArrayList<>();
+  private List<PageReport> pages = new ArrayList<>();
   private Domain baseDomain;
   private Domain compareDomain;
 
-  public void addPageResult(PageResult result) {
+  public void addPageResult(PageReport result) {
     pages.add(result);
   }
   
-  public List<PageResult> getPageResult() {
-    pages.sort(PageResult.Comparators.DIFF);
+  public List<PageReport> getPageResult() {
+    pages.sort(PageReport.Comparators.DIFF);
     return pages;
   }
 
-  public List<PageResult> getPages() {
+  public List<PageReport> getPages() {
     return pages;
+  }
+
+  public void setPages(List<PageReport> pages) {
+    this.pages = pages;
   }
   
   public Date getDate() {
