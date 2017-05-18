@@ -61,20 +61,20 @@ public class WebsiteReportGenerator {
   
   private void generateThumbnails() {
     for (String path : paths) {      
-      String folder = WebsiteScreenshots.generateFolderName(path);      
+      String folder = WebsiteScreenshots.generatePathFolderName(path);      
     }
   }
   
   private ReportResult loadData() {
     ReportResult result = new ReportResult();
     
-    result.setWebsite1(websites.get(0));
-    result.setWebsite2(websites.get(1));
+    result.setBaseDomain(websites.get(0));
+    result.setCompareDomain(websites.get(1));
     result.setDate(new Date());
     
     for (String path : paths) {
       PageResult pageResult = new PageResult(path);
-      String folder = WebsiteScreenshots.generateFolderName(path);
+      String folder = WebsiteScreenshots.generatePathFolderName(path);
       for (Dimension display : displays) {
 	DisplayResult displayResult = new DisplayResult();
 	displayResult.setWidth(0);

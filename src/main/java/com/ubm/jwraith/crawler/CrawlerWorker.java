@@ -1,10 +1,7 @@
 package com.ubm.jwraith.crawler;
 
-import static java.lang.Thread.sleep;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.By;
@@ -48,13 +45,11 @@ public class CrawlerWorker implements Runnable {
       if (pendingUrls.isEmpty()) {	
 	Thread.sleep(100);
 	waitingTime++;	
-	System.out.println("Waiting");
       } else {
 	String url = pendingUrls.take();
-	System.out.println("Pending: " + pendingUrls.size());
 	processUrl(url);
 	if (i == 50) {
-	  driver.close();
+	  driver.quit();
 	  driver = new HtmlUnitDriver();
 	  i = 0;
 	}
@@ -62,7 +57,8 @@ public class CrawlerWorker implements Runnable {
 	  i++;
 	}
       }
-    } while(waitingTime < 50);    
+    } while(waitingTime < 30);
+    driver.quit();
   }
   
   public void processUrl(String path) throws InterruptedException {

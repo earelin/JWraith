@@ -9,17 +9,18 @@ import java.util.Comparator;
 class DisplayResult implements Comparable<DisplayResult> {
   
   private int width = 0;
-  private String screenshotWebsite1;
-  private String screenshotWebsite2;
+  private String baseDomainScreenshot;
+  private String compareDomainScreenshot;
   private String diffImage;
   private float diffValue = 0;
 
   public DisplayResult() {}
   
-  public DisplayResult(String screenshotWebsite1, String screenshotWebsite2, String diffImage) {
-    this.screenshotWebsite1 = screenshotWebsite1;
-    this.screenshotWebsite2 = screenshotWebsite2;
+  public DisplayResult(String baseDomainScreenshot, String compareDomainScreenshot, String diffImage, float diffValue) {
+    this.baseDomainScreenshot = baseDomainScreenshot;
+    this.compareDomainScreenshot = compareDomainScreenshot;
     this.diffImage = diffImage;
+    this.diffValue = diffValue;
   }
   
   public int getWidth() {
@@ -30,20 +31,20 @@ class DisplayResult implements Comparable<DisplayResult> {
     this.width = width;
   }
 
-  public String getScreenshotWebsite1() {
-    return screenshotWebsite1;
+  public String getBaseDomainScreenshot() {
+    return baseDomainScreenshot;
   }
 
-  public void setScreenshotWebsite1(String screenshotWebsite1) {
-    this.screenshotWebsite1 = screenshotWebsite1;
+  public void setBaseDomainScreenshot(String baseDomainScreenshot) {
+    this.baseDomainScreenshot = baseDomainScreenshot;
   }
 
-  public String getScreenshotWebsite2() {
-    return screenshotWebsite2;
+  public String getCompareDomainScreenshot() {
+    return compareDomainScreenshot;
   }
 
-  public void setScreenshotWebsite2(String screenshotWebsite2) {
-    this.screenshotWebsite2 = screenshotWebsite2;
+  public void setCompareDomainScreenshot(String compareDomainScreenshot) {
+    this.compareDomainScreenshot = compareDomainScreenshot;
   }
 
   public String getDiffImage() {

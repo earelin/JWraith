@@ -3,8 +3,8 @@ browser: "phantomjs"
 directory: "enso"
 
 domains:
-  base: "http://www.decorex.com/uk"
-  compare: "http://www.cphi.com/europe"
+  base: "http://webserver.dev/enso"
+  compare: "http://webserver.dev/dev"
 
 workers: 4
 
@@ -15,7 +15,8 @@ screen_widths:
 spider_file: "paths.txt"
 
 spider_skips:
-  - /ajax/.*
+  - "^/ajax/.*"
+  - "^/calendar/ical/.*"
 
 #paths:
 #  home: /

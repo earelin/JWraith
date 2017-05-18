@@ -3,10 +3,16 @@ package com.ubm.jwraith;
 import com.ubm.jwraith.config.ConfigurationFileException;
 import com.ubm.jwraith.config.Configuration;
 import com.ubm.jwraith.crawler.WebsiteCrawler;
+import com.ubm.jwraith.screenshots.WebsiteScreenshots;
 import java.io.FileNotFoundException;
-import java.util.Queue;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  *
@@ -17,6 +23,7 @@ public class JWraith {
   public static void main(String[] args) {
     String configurationFilePath = "configuration.yml";
     String mode = "compare";
+    List<String> paths;
     
     if (args.length == 2) {
       mode = args[0];
@@ -40,15 +47,18 @@ public class JWraith {
       case "spider":
 	launchSpider(configuration);
 	break;
-      case "compare":
-	launchScreenshots(configuration, configuration.getBaseDomain());
-	launchScreenshots(configuration, configuration.getCompareDomain());
+      case "capture":
+	paths = loadPaths();
+	launchScreenshots(configuration, configuration.getBaseDomain(), "base", paths);
+	launchScreenshots(configuration, configuration.getCompareDomain(), "compare", paths);
 	break;
       case "history":
-	launchScreenshots(configuration, configuration.getBaseDomain());
+	paths = loadPaths();
+	launchScreenshots(configuration, configuration.getBaseDomain(), "", paths);
 	break;
       case "latest":
-	launchScreenshots(configuration, configuration.getBaseDomain());
+	paths = loadPaths();
+	launchScreenshots(configuration, configuration.getBaseDomain(), "", paths);
 	break;
       default:
 	System.out.println("Unsupported operation '" + args[0] + "'.");
@@ -122,12 +132,26 @@ public class JWraith {
 //    reportGenerator.process();
   }
   
+  private static List<String> loadPaths() {
+    List<String> paths = new ArrayList<>();
+    try (Stream<String> stream = Files.lines(Paths.get("urls.txt"))) {
+      String[] urls = stream.toArray(String[]::new);
+      for (String url : urls) {
+	paths.add(url);
+      }
+    } catch (IOException ex) {
+      Logger.getLogger(JWraith.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return paths;
+  }
+  
   private static void launchSpider(Configuration configuration) {
     WebsiteCrawler crawler = new WebsiteCrawler(configuration.getBaseDomain());
     crawler.process();
   }
 
-  private static void launchScreenshots(Configuration configuration, String baseDomain) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  private static void launchScreenshots(Configuration configuration, String domain, String domainLabel, List<String> paths) {
+    WebsiteScreenshots screenshots = new WebsiteScreenshots(domain, domainLabel, configuration.getDirectory(), paths);
+    screenshots.process();
   }
 }

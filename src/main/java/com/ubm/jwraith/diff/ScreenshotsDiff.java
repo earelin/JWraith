@@ -38,7 +38,7 @@ public class ScreenshotsDiff {
   }
   
   public void processImages(String path) {
-    String folder = "shots/" + WebsiteScreenshots.generateFolderName(path);
+    String folder = "shots/" + WebsiteScreenshots.generatePathFolderName(path);
     
     for (Dimension dimension : dimensions) {
       try {

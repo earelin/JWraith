@@ -18,7 +18,7 @@ public class Configuration {
 
   private String baseDomain;
   private String compareDomain;
-  private List<Integer> screenWidths = new ArrayList<>();
+  private final List<Integer> screenWidths = new ArrayList<>();
   private int workers = 1;
   private String browser = "phantomjs";
   private String directory = "shots";

@@ -1,20 +1,13 @@
 package com.ubm.jwraith.screenshots;
 
-import com.ubm.jwraith.config.Domain;
+import com.ubm.jwraith.config.Configuration;
+import com.ubm.jwraith.crawler.WebsiteCrawler;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  *
@@ -22,61 +15,53 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  */
 public class WebsiteScreenshots {
   
-  private Domain website;
-  private List<Dimension> displays;
-  private Queue<String> paths;
-  private WebDriver driver;
+  private final String domain;
+  private final String domainLabel;
+  private final List<String> paths;
+  private final Configuration configuration = Configuration.getInstance();
+  private final String folder;
   
-  public WebsiteScreenshots(Domain website, List<Dimension> displays, Queue<String> paths) {
-    this.website = website;
+  public WebsiteScreenshots(String domain, String domainLabel, String folder, List<String> paths) {
+    this.domain = domain;
+    this.domainLabel = domainLabel;
+    this.folder = folder;
     this.paths = paths;
-    this.displays = displays;
-    DesiredCapabilities caps = new DesiredCapabilities();
-    caps.setJavascriptEnabled(true);                
-    caps.setCapability("takesScreenshot", true);  
-    caps.setCapability(
-                        PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
-                        "/usr/local/bin/phantomjs"
-                    );
-    driver = new PhantomJSDriver(caps);
   }
   
   public void process() {
     // Check folder
-    File f = new File("shots");
+    File f = new File(folder);
     if(!f.exists()) { 
       f.mkdir();
     }
+    
+    BlockingQueue<String> pendingUrls = new LinkedBlockingQueue<>(paths);
     
     // Generate screenshots
-    do {
-      String path = paths.poll();
-      processUrl(path);
-    } while (!paths.isEmpty());    
-  }
-  
-  public void processUrl(String path) {
-    String folderName = generateFolderName(path);
-    File f = new File("shots/" + folderName);
-    if(!f.exists()) { 
-      f.mkdir();
+    Thread[] workers = new Thread[configuration.getWorkers()];
+    for (int i = 0; i < configuration.getWorkers(); i++) {
+      workers[i] = new Thread(new ScreenshotsWorker(domain, domainLabel, folder, configuration.getScreenWidths(), pendingUrls));
+      workers[i].start();
     }
     
-    for (Dimension dimension : displays) {
-      driver.manage().window().setSize(dimension);
-      driver.get(website.getUrl() + path);            
-      
-      String fileName = dimension.width + "x" + dimension.height + "_" + website.getLabel() + ".png";
-      File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-      try {
-	FileUtils.copyFile(scrFile, new File("shots/" + folderName + "/" + fileName));
-      } catch (IOException ex) {
-	Logger.getLogger(WebsiteScreenshots.class.getName()).log(Level.SEVERE, null, ex);
+    boolean workersAlive = false;
+    do {
+      workersAlive = false;
+      for (Thread worker : workers) {
+	if (worker.isAlive()) {
+	  workersAlive = true;
+	  try {
+	    worker.join(100);
+	  } catch (InterruptedException ex) {
+	    Logger.getLogger(WebsiteCrawler.class.getName()).log(Level.SEVERE, null, ex);
+	  }
+	  break;
+	}
       }
-    }
+    } while (workersAlive);
   }
   
-  public static String generateFolderName(String path) {
+  public static String generatePathFolderName(String path) {
     String folderName = "";
     if (path.equals("/")) {
       folderName = "home";
@@ -85,14 +70,6 @@ public class WebsiteScreenshots {
       folderName = path.replace("/", "__");
     }
     return folderName;
-  }
-
-  public void setWebsite(Domain website) {
-    this.website = website;
-  }
-
-  public void setPaths(Queue<String> paths) {
-    this.paths = paths;
   }
   
 }

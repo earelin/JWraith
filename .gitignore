@@ -4,3 +4,5 @@
 /.nb-gradle/
 /build/
 /.nb-gradle-properties
+/paths.txt
+/enso/

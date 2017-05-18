@@ -13,8 +13,8 @@ class ReportResult {
   
   private Date date;
   private List<PageResult> pages = new ArrayList<>();
-  private Domain website1;
-  private Domain website2;
+  private Domain baseDomain;
+  private Domain compareDomain;
 
   public void addPageResult(PageResult result) {
     pages.add(result);
@@ -37,20 +37,20 @@ class ReportResult {
     this.date = date;
   }
 
-  public Domain getWebsite1() {
-    return website1;
+  public Domain getBaseDomain() {
+    return baseDomain;
   }
 
-  public void setWebsite1(Domain website1) {
-    this.website1 = website1;
+  public void setBaseDomain(Domain baseDomain) {
+    this.baseDomain = baseDomain;
   }
 
-  public Domain getWebsite2() {
-    return website2;
+  public Domain getCompareDomain() {
+    return compareDomain;
   }
 
-  public void setWebsite2(Domain website2) {
-    this.website2 = website2;
+  public void setCompareDomain(Domain compareDomain) {
+    this.compareDomain = compareDomain;
   }
   
 }
