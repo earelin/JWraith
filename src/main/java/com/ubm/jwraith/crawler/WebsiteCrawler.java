@@ -21,6 +21,7 @@ public class WebsiteCrawler {
   private BlockingQueue<String> checkedUrls = new LinkedBlockingQueue<>();
   private BlockingQueue<String> pendingUrls = new LinkedBlockingQueue<>();
   private String domain;
+  private Thread[] workers;
   
   public WebsiteCrawler(String domain) {
     this.domain = domain;
@@ -29,30 +30,32 @@ public class WebsiteCrawler {
   public List<String> process() {
     pendingUrls.add("/");
     
+    workers = new Thread[configuration.getWorkers()];
     for (int i = 0; i < configuration.getWorkers(); i++) {
-      Thread worker = new Thread(new CrawlerWorker(domain, configuration.getSpiderSkips(), checkedUrls, pendingUrls));
-      worker.start();
+      workers[i] = new Thread(new CrawlerWorker(domain, configuration.getSpiderSkips(), checkedUrls, pendingUrls));
+      workers[i].start();
     }
     
-    int i = 0;
+    boolean workersAlive = false;
     do {
       try {
-	sleep(100);
+	workers[0].join(1000);
       } catch (InterruptedException ex) {
 	Logger.getLogger(WebsiteCrawler.class.getName()).log(Level.SEVERE, null, ex);
       }
-      
-      if (i == 20) {
-	System.out.println("Pending queue size: " + pendingUrls.size());
-	i = 0;
+
+      workersAlive = false;
+      System.out.println("----- Checking workers status -----");
+      for (Thread worker : workers) {
+	if (worker.isAlive()) {
+	  workersAlive = true;
+	  break;
+	}
       }
-      else {      
-	i++;
-      }
-      
-    } while (!pendingUrls.isEmpty());
+    } while (workersAlive);
     
     FileWriter fw = null;
+    System.out.println("Writing " + pendingUrls.size() + " urls");
     try {
       fw = new FileWriter("urls.txt");
       for (String url : checkedUrls) {

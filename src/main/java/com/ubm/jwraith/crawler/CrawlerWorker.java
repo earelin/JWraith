@@ -46,7 +46,7 @@ public class CrawlerWorker implements Runnable {
     int waitingTime = 0;
     do {
       if (pendingUrls.isEmpty()) {	
-	sleep(100);
+	Thread.sleep(100);
 	waitingTime++;	
 	System.out.println("Waiting");
       } else {
