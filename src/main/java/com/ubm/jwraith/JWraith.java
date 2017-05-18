@@ -54,7 +54,7 @@ public class JWraith {
 	System.out.println("Unsupported operation '" + args[0] + "'.");
     }
     
-   
+    
     
     // Capture screenshots
 //    WebsiteScreenshots screenshots = new WebsiteScreenshots(configuration.getWebsites().get(0), configuration.getDisplays(), paths);
