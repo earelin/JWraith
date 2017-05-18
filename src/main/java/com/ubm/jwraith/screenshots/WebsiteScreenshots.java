@@ -1,6 +1,6 @@
-package com.ubm.enso.edt.screenshots;
+package com.ubm.jwraith.screenshots;
 
-import com.ubm.enso.edt.config.Website;
+import com.ubm.jwraith.config.Domain;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -22,12 +22,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  */
 public class WebsiteScreenshots {
   
-  private Website website;
+  private Domain website;
   private List<Dimension> displays;
   private Queue<String> paths;
   private WebDriver driver;
   
-  public WebsiteScreenshots(Website website, List<Dimension> displays, Queue<String> paths) {
+  public WebsiteScreenshots(Domain website, List<Dimension> displays, Queue<String> paths) {
     this.website = website;
     this.paths = paths;
     this.displays = displays;
@@ -87,7 +87,7 @@ public class WebsiteScreenshots {
     return folderName;
   }
 
-  public void setWebsite(Website website) {
+  public void setWebsite(Domain website) {
     this.website = website;
   }
 

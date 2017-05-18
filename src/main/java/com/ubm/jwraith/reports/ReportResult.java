@@ -1,6 +1,6 @@
-package com.ubm.enso.edt.reports;
+package com.ubm.jwraith.reports;
 
-import com.ubm.enso.edt.config.Website;
+import com.ubm.jwraith.config.Domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +13,8 @@ class ReportResult {
   
   private Date date;
   private List<PageResult> pages = new ArrayList<>();
-  private Website website1;
-  private Website website2;
+  private Domain website1;
+  private Domain website2;
 
   public void addPageResult(PageResult result) {
     pages.add(result);
@@ -37,19 +37,19 @@ class ReportResult {
     this.date = date;
   }
 
-  public Website getWebsite1() {
+  public Domain getWebsite1() {
     return website1;
   }
 
-  public void setWebsite1(Website website1) {
+  public void setWebsite1(Domain website1) {
     this.website1 = website1;
   }
 
-  public Website getWebsite2() {
+  public Domain getWebsite2() {
     return website2;
   }
 
-  public void setWebsite2(Website website2) {
+  public void setWebsite2(Domain website2) {
     this.website2 = website2;
   }
   

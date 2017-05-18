@@ -1,7 +1,7 @@
-package com.ubm.enso.edt.diff;
+package com.ubm.jwraith.diff;
 
-import com.ubm.enso.edt.config.Website;
-import com.ubm.enso.edt.screenshots.WebsiteScreenshots;
+import com.ubm.jwraith.config.Domain;
+import com.ubm.jwraith.screenshots.WebsiteScreenshots;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -19,11 +19,11 @@ import org.openqa.selenium.Dimension;
  */
 public class ScreenshotsDiff {
     
-  private final List<Website> websites;
+  private final List<Domain> websites;
   private final List<Dimension> dimensions;
   private Queue<String> paths;
   
-  public ScreenshotsDiff(List<Website> websites, List<Dimension> dimensions, Queue<String> paths) {
+  public ScreenshotsDiff(List<Domain> websites, List<Dimension> dimensions, Queue<String> paths) {
     this.websites = websites;
     this.dimensions = dimensions;
     this.paths = paths;

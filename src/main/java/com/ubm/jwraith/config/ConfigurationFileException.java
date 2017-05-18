@@ -1,4 +1,4 @@
-package com.ubm.enso.edt.config;
+package com.ubm.jwraith.config;
 
 /**
  *
