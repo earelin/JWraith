@@ -1,15 +1,15 @@
-package com.ubm.enso.edt.config;
+package com.ubm.jwraith.config;
 
 /**
  *
  * @author Xavier Carriba
  */
-public class Website {
+public class Domain {
   
   private String label;
   private String url;
 
-  public Website(String label, String url) {
+  public Domain(String label, String url) {
     this.label = label;
     this.url = url;
   }

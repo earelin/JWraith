@@ -1,4 +1,4 @@
-package com.ubm.enso.edt.screenshots;
+package com.ubm.jwraith.screenshots;
 
 /**
  *

@@ -1,17 +1,15 @@
-package com.ubm.enso.edt.crawler;
+package com.ubm.jwraith.crawler;
 
+import com.ubm.jwraith.config.Configuration;
 import java.io.FileWriter;
 import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 /**
  *
@@ -19,20 +17,39 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
  */
 public class WebsiteCrawler {
 
-  private Queue<String> checkedUrls = new LinkedList<>();
-  private Queue<String> pendingUrls = new LinkedList<>();
-  private String basePath;
-  WebDriver driver = new HtmlUnitDriver();
+  private Configuration configuration = Configuration.getInstance();
+  private BlockingQueue<String> checkedUrls = new LinkedBlockingQueue<>();
+  private BlockingQueue<String> pendingUrls = new LinkedBlockingQueue<>();
+  private String domain;
   
-  public WebsiteCrawler(String basePath) {
-    this.basePath = basePath;
+  public WebsiteCrawler(String domain) {
+    this.domain = domain;
   }
   
-  public Queue<String> process() {
+  public List<String> process() {
     pendingUrls.add("/");
+    
+    for (int i = 0; i < configuration.getWorkers(); i++) {
+      Thread worker = new Thread(new CrawlerWorker(domain, configuration.getSpiderSkips(), checkedUrls, pendingUrls));
+      worker.start();
+    }
+    
+    int i = 0;
     do {
-      String path = pendingUrls.poll();
-      processUrl(path);
+      try {
+	sleep(100);
+      } catch (InterruptedException ex) {
+	Logger.getLogger(WebsiteCrawler.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      
+      if (i == 20) {
+	System.out.println("Pending queue size: " + pendingUrls.size());
+	i = 0;
+      }
+      else {      
+	i++;
+      }
+      
     } while (!pendingUrls.isEmpty());
     
     FileWriter fw = null;
@@ -45,32 +62,32 @@ public class WebsiteCrawler {
     } catch (IOException ex) {
       Logger.getLogger(WebsiteCrawler.class.getName()).log(Level.SEVERE, null, ex);
     }
-    return checkedUrls;
+    return new ArrayList(checkedUrls);
   }
   
-  public void processUrl(String path) {
-    driver.get(basePath + path);
-    List<WebElement> elements = driver.findElements(By.tagName("a"));
-    
-    checkedUrls.add(path);    
-    
-    for (WebElement element : elements) {
-      String url = element.getAttribute("href");
-      if (url != null && url.startsWith(basePath)) {
-	int hashIndex = url.indexOf('#');
-	
-	if (hashIndex != -1) {
-	  url = url.substring(0, hashIndex);
-	}
-	
-	url = url.substring(basePath.length());
-	
-	if (!(checkedUrls.contains(url) || pendingUrls.contains(url))) {
-	  pendingUrls.add(url);
-	  System.out.println(url);
-	}
-      }
-    }
-  }
+//  public void processUrl(String path) {
+//    driver.get(domain + path);
+//    List<WebElement> elements = driver.findElements(By.tagName("a"));
+//    
+//    checkedUrls.add(path);    
+//    
+//    for (WebElement element : elements) {
+//      String url = element.getAttribute("href");
+//      if (url != null && url.startsWith(domain)) {
+//	int hashIndex = url.indexOf('#');
+//	
+//	if (hashIndex != -1) {
+//	  url = url.substring(0, hashIndex);
+//	}
+//	
+//	url = url.substring(domain.length());
+//	
+//	if (!(checkedUrls.contains(url) || pendingUrls.contains(url))) {
+//	  pendingUrls.add(url);
+//	  System.out.println(url);
+//	}
+//      }
+//    }
+//  }
   
 }

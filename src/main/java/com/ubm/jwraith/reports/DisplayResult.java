@@ -1,4 +1,4 @@
-package com.ubm.enso.edt.reports;
+package com.ubm.jwraith.reports;
 
 import java.util.Comparator;
 

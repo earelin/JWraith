@@ -1,7 +1,7 @@
-package com.ubm.enso.edt.reports;
+package com.ubm.jwraith.reports;
 
-import com.ubm.enso.edt.config.Website;
-import com.ubm.enso.edt.screenshots.WebsiteScreenshots;
+import com.ubm.jwraith.config.Domain;
+import com.ubm.jwraith.screenshots.WebsiteScreenshots;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -23,11 +23,11 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 public class WebsiteReportGenerator {
   
   private TemplateEngine templateEngine;
-  private final List<Website> websites;
+  private final List<Domain> websites;
   private final List<Dimension> displays;
   private final Queue<String> paths;
 
-  public WebsiteReportGenerator(List<Website> websites, List<Dimension> displays, Queue<String> paths) {
+  public WebsiteReportGenerator(List<Domain> websites, List<Dimension> displays, Queue<String> paths) {
     this.websites = websites;
     this.displays = displays;
     this.paths = paths;
