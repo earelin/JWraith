@@ -3,7 +3,6 @@ package com.ubm.jwraith.crawler;
 import com.ubm.jwraith.config.Configuration;
 import java.io.FileWriter;
 import java.io.IOException;
-import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -17,10 +16,10 @@ import java.util.logging.Logger;
  */
 public class WebsiteCrawler {
 
-  private Configuration configuration = Configuration.getInstance();
-  private BlockingQueue<String> checkedUrls = new LinkedBlockingQueue<>();
-  private BlockingQueue<String> pendingUrls = new LinkedBlockingQueue<>();
-  private String domain;
+  private final Configuration configuration = Configuration.getInstance();
+  private final BlockingQueue<String> checkedUrls = new LinkedBlockingQueue<>();
+  private final BlockingQueue<String> pendingUrls = new LinkedBlockingQueue<>();
+  private final String domain;
   
   public WebsiteCrawler(String domain) {
     this.domain = domain;
@@ -35,7 +34,7 @@ public class WebsiteCrawler {
       workers[i].start();
     }
     
-    boolean workersAlive = false;
+    boolean workersAlive;
     do {
       workersAlive = false;
       for (Thread worker : workers) {
@@ -58,9 +57,16 @@ public class WebsiteCrawler {
       for (String url : checkedUrls) {
 	fw.write(url + "\n");
       }
-      fw.close();
     } catch (IOException ex) {
       Logger.getLogger(WebsiteCrawler.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      if (fw != null) {
+	try {
+	  fw.close();
+	} catch (IOException ex) {
+	  Logger.getLogger(WebsiteCrawler.class.getName()).log(Level.SEVERE, null, ex);
+	}
+      }
     }
     return new ArrayList(checkedUrls);
   }

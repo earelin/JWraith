@@ -46,7 +46,9 @@ public class WebsiteReportGenerator {
     } catch (FileNotFoundException ex) {
       Logger.getLogger(WebsiteReportGenerator.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
-      writer.close();
+      if (writer != null) {
+	writer.close();
+      }
     }
   }
   
