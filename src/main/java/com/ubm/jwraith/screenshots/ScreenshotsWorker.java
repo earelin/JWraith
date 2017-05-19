@@ -2,6 +2,7 @@ package com.ubm.jwraith.screenshots;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
@@ -12,7 +13,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
@@ -41,20 +44,19 @@ public class ScreenshotsWorker implements Runnable  {
     this.pendingUrls = pendingUrls;
     this.screenWidths = screenWidths;
     
-    caps = DesiredCapabilities.firefox();
-//    caps = new DesiredCapabilities();
-//    caps.setJavascriptEnabled(true);                
-//    caps.setCapability("takesScreenshot", true);  
-//    caps.setCapability(
-//      PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
-//      "/usr/local/bin/phantomjs");
-//    ArrayList<String> cliArgsCap = new ArrayList<String>();
-//    cliArgsCap.add("--web-security=false");
-//    cliArgsCap.add("--webdriver-loglevel=DEBUG");
-//    caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
-//    caps.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, "none");
-//    driver = new PhantomJSDriver(caps);
-    driver = new FirefoxDriver(caps);
+//    caps = DesiredCapabilities.chrome();
+    caps = new DesiredCapabilities();
+    caps.setJavascriptEnabled(true);                
+    caps.setCapability("takesScreenshot", true);  
+    caps.setCapability(
+      PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
+      "/usr/local/bin/phantomjs");
+    ArrayList<String> cliArgsCap = new ArrayList<String>();
+    cliArgsCap.add("--web-security=false");
+    caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
+    caps.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, "none");
+    driver = new PhantomJSDriver(caps);
+//    driver = new FirefoxDriver();
   }
   
   @Override
@@ -67,18 +69,9 @@ public class ScreenshotsWorker implements Runnable  {
   }
 
   public void crawl() throws InterruptedException {
-    int i = 0;
     while(!pendingUrls.isEmpty()) {      
       String url = pendingUrls.take();
       processUrl(url);
-      if (i == 25) {
-	driver.quit();
-	driver = new FirefoxDriver(caps);
-	i = 0;
-      }
-      else {
-	i++;
-      }
     }
     driver.quit();
   }
@@ -91,11 +84,11 @@ public class ScreenshotsWorker implements Runnable  {
     }
     
     for (int screenWidth : screenWidths) {
-      driver.manage().window().setSize(new Dimension(screenWidth, screenWidth / (16 / 9)));
+      driver.manage().window().setSize(new Dimension(screenWidth, (int) screenWidth / (16 / 9)));
       driver.get(domain + path);
       
-      Long screenHeight = (Long) ((JavascriptExecutor) driver).executeScript("return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
-      driver.manage().window().setSize(new Dimension(screenWidth, screenHeight.intValue()));
+//      Long screenHeight = (Long) ((JavascriptExecutor) driver).executeScript("return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
+//      driver.manage().window().setSize(new Dimension(screenWidth, screenHeight.intValue()));
       
       String fileName = WebsiteScreenshots.generateFileName(screenWidth, domainLabel);
       File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);

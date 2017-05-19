@@ -29,7 +29,7 @@ public class Configuration {
   private List<String> spiderSkips;
   private String pathsFile;
   private int thumbnailWidth = 300;
-  private int thumbnailHeight = 200;
+  private int thumbnailHeight = 300;
 
   public static Configuration getInstance() {
     if (instance == null) {

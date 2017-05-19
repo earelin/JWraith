@@ -27,7 +27,7 @@ public class WebsiteThumbnails {
     // Generate diff threads
     Thread[] workers = new Thread[configuration.getWorkers()];
     for (int i = 0; i < configuration.getWorkers(); i++) {
-      workers[i] = new Thread(new ThumbnailsWorker(pendingPages, configuration.getThumbnailWidth(), configuration.getThumbnailHeight()));
+      workers[i] = new Thread(new ThumbnailsWorker(pendingPages, configuration.getThumbnailWidth(), configuration.getThumbnailHeight(), configuration.getDirectory()));
       workers[i].start();
     }
     
@@ -48,8 +48,8 @@ public class WebsiteThumbnails {
     } while (workersAlive);
   }
 
-  public static String calculateThumbnailPath(String imagePath) {
-    return "thumbnails/" + imagePath;
+  public static String calculateThumbnailPath(String basePath, String imagePath) {
+    return basePath + "/thumbnails/" + imagePath;
   }
   
   public static void setGraphics2dSettings(Graphics2D g) {

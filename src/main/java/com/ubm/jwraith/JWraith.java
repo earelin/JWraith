@@ -6,6 +6,7 @@ import com.ubm.jwraith.crawler.WebsiteCrawler;
 import com.ubm.jwraith.diff.ScreenshotsDiff;
 import com.ubm.jwraith.reports.ReportData;
 import com.ubm.jwraith.reports.PageReport;
+import com.ubm.jwraith.reports.WebsiteReportGenerator;
 import com.ubm.jwraith.reports.WebsiteThumbnails;
 import com.ubm.jwraith.screenshots.WebsiteScreenshots;
 import java.io.FileNotFoundException;
@@ -55,9 +56,9 @@ public class JWraith {
 	paths = loadPaths(configuration);
 	launchScreenshots(configuration, configuration.getBaseDomain(), "base", paths);
 	launchScreenshots(configuration, configuration.getCompareDomain(), "compare", paths);
-//	ReportData report = launchDiffCalculationCapture(
-//		configuration.getDirectory(), configuration.getDirectory(), paths);
-//	lauchReportGenerator(report);
+	ReportData report = launchDiffCalculationCapture(
+		configuration.getDirectory(), configuration.getDirectory(), paths);
+	lauchReportGenerator(report);
 	break;
       case "history":
 	paths = loadPaths(configuration);

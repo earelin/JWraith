@@ -1,19 +1,19 @@
 browser: "phantomjs"
-browser_executable: "/usr/local/bin/phantomjs"
+driver_executable: "/usr/local/bin/phantomjs"
 
 directory: "enso"
 
 domains:
-  base: "http://www.cphi.com/europe"
-  compare: "http://www.decorex.com/uk"
+  base: "http://webserver.dev/enso"
+  compare: "http://webserver.dev/dev"
 
-workers: 6
+workers: 1
 
 screen_widths:
   - 320
   - 1280
 
-paths_file: "paths.txt"
+paths_file: "paths_simple.txt"
 
 spider_skips:
   - "^/ajax/.*"

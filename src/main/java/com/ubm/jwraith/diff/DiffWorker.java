@@ -106,6 +106,7 @@ public class DiffWorker implements Runnable {
 	String diffFileName = pathCompareFolder + "/" + WebsiteScreenshots.generateFileName(screenWidth, "diff");	
 	ImageIO.write(diffImage, "png", new File(diffFileName));
 	displayReport.setDiffImage(diffFileName);
+	pageReport.addDisplayResult(displayReport);
       } catch (Exception ex) {
 	Logger.getLogger(WebsiteScreenshots.class.getName()).log(Level.SEVERE, null, ex);
       }
