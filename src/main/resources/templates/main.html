@@ -9,12 +9,46 @@
   <body>
     <div class="container">
       <div class="row page-header">
-        <h1>List of screenshots <small data-th-text="${report_date}">taken today</small></h1>
+        <h1>JWraith Report. <small data-th-text="${report_date}">taken today</small></h1>
       </div>
       <div class="row" data-th-each="page : ${pages}">
-        <h2 data-th-text="${page.path}">Page's URL</h2>
-        <div class="col-6-md" data-th-each="screen : ${page.">
-          
+        <h2><span data-th-text="${page.path}">Page's URL</span> <span data-th-class="'pull-right label label-' + ((${page.averangeDiff} == 0) ? 'success' : ((${page.averangeDiff} * 100 > ${threshold}) ? 'danger' : 'warning'))" data-th-text="${#numbers.formatPercent(page.averangeDiff, 0, 2)}">25%</span></h2>
+        <div class="col-md-6" data-th-each="display : ${page.displays}">
+          <div class="panel panel-default">
+            <div class="panel-heading"><span data-th-text="${display.width}">300</span>px</div>
+            <div class="panel-body">
+              <div class="col-md-4">
+                <div class="thumbnail">
+                  <a href="" data-th-href="'../' + ${display.baseDomainScreenshot}">
+                    <img src="" class="img-responsive" data-th-src="'thumbnails/' + ${display.baseDomainScreenshot}">
+                  </a>
+                  <div class="caption">
+                    <p class="text-center">Base</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="thumbnail">
+                  <a href="" data-th-href="'../' + ${display.compareDomainScreenshot}">
+                    <img src="" class="img-responsive" data-th-src="'thumbnails/' + ${display.compareDomainScreenshot}">
+                  </a>
+                  <div class="caption">
+                    <p class="text-center">Compare</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="thumbnail">
+                  <a href="" data-th-href="'../' + ${display.diffImage}">
+                    <img src="" class="img-responsive" data-th-src="'thumbnails/' + ${display.diffImage}">
+                  </a>
+                  <div class="caption">
+                    <p class="text-center">Diff <span data-th-class="'label label-' + ((${display.diffValue} == 0) ? 'success' : ((${display.diffValue} * 100 > ${threshold}) ? 'danger' : 'warning'))" data-th-text="${#numbers.formatPercent(display.diffValue, 0, 2)}">25%</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

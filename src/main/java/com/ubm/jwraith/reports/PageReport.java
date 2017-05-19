@@ -46,13 +46,7 @@ public class PageReport implements Comparable<PageReport> {
 
   @Override
   public int compareTo(PageReport o) {
-    return Comparators.DIFF.compare(this, o);
-  }
-  
-  public static class Comparators {
-    public static final Comparator<PageReport> DIFF =
-	  (PageReport o1, PageReport o2)
-		  -> Float.compare(o1.getAverangeDiff(), o2.getAverangeDiff());
+    return Comparators.DIFF_DESC.compare(this, o);
   }
 
   public String getTitle() {
@@ -61,6 +55,12 @@ public class PageReport implements Comparable<PageReport> {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+  
+  public static class Comparators {
+    public static final Comparator<PageReport> DIFF_DESC =
+	  (PageReport o1, PageReport o2)
+		  -> Float.compare(o2.getAverangeDiff(), o1.getAverangeDiff());
   }
   
 }

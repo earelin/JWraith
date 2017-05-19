@@ -30,6 +30,7 @@ public class Configuration {
   private String pathsFile;
   private int thumbnailWidth = 300;
   private int thumbnailHeight = 300;
+  private int threshold = 15;
 
   public static Configuration getInstance() {
     if (instance == null) {
@@ -151,6 +152,10 @@ public class Configuration {
 
   public int getThumbnailHeight() {
     return thumbnailHeight;
+  }
+
+  public int getThreshold() {
+    return threshold;
   }
 
 }

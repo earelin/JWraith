@@ -4,8 +4,11 @@ import com.ubm.jwraith.config.Configuration;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +20,7 @@ import java.util.logging.Logger;
 public class WebsiteCrawler {
 
   private final Configuration configuration = Configuration.getInstance();
-  private final BlockingQueue<String> checkedUrls = new LinkedBlockingQueue<>();
+  private final ConcurrentMap<String, String> checkedUrls = new ConcurrentHashMap<>();
   private final BlockingQueue<String> pendingUrls = new LinkedBlockingQueue<>();
   private final String domain;
   
@@ -50,11 +53,13 @@ public class WebsiteCrawler {
       }
     } while (workersAlive);
     
+    List<String> urls = new ArrayList(checkedUrls.keySet());
+    Collections.sort(urls);
+    
     FileWriter fw = null;
-    System.out.println("Writing " + checkedUrls.size() + " urls");
     try {
       fw = new FileWriter(configuration.getSpiderFile());
-      for (String url : checkedUrls) {
+      for (String url : urls) {
 	fw.write(url + "\n");
       }
     } catch (IOException ex) {
@@ -68,7 +73,7 @@ public class WebsiteCrawler {
 	}
       }
     }
-    return new ArrayList(checkedUrls);
+    return urls;
   }
   
 }

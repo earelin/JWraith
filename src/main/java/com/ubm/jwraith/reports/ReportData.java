@@ -21,7 +21,7 @@ public class ReportData {
   }
   
   public List<PageReport> getPageResult() {
-    pages.sort(PageReport.Comparators.DIFF);
+    pages.sort(PageReport.Comparators.DIFF_DESC);
     return pages;
   }
 

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,7 @@ public class WebsiteReportGenerator {
     templateEngine = new TemplateEngine();
     final ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
     resolver.setPrefix("templates/");
-    resolver.setTemplateMode("HTML5");
+    resolver.setTemplateMode("HTML");
     templateEngine.setTemplateResolver(resolver);
   }
   
@@ -39,9 +40,11 @@ public class WebsiteReportGenerator {
       final Context ctx = new Context();
 
       DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-      ctx.setVariable("report_date", dateFormat.format(new Date()));      
-
-      writer = new PrintWriter("shots/index.html");      
+      ctx.setVariable("report_date", dateFormat.format(new Date()));
+      ctx.setVariable("pages", report.getPages());
+      ctx.setVariable("threshold", configuration.getThreshold());
+      
+      writer = new PrintWriter(configuration.getDirectory() + "/index.html");   
       templateEngine.process("main.html", ctx, writer);  
     } catch (FileNotFoundException ex) {
       Logger.getLogger(WebsiteReportGenerator.class.getName()).log(Level.SEVERE, null, ex);

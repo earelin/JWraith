@@ -107,6 +107,7 @@ public class JWraith {
   private static void lauchReportGenerator(ReportData report) {
     WebsiteThumbnails websiteThumbnails = new WebsiteThumbnails(report);
     websiteThumbnails.process();
-    //WebsiteReportGenerator reportGenerator = new WebsiteReportGenerator();
+    WebsiteReportGenerator reportGenerator = new WebsiteReportGenerator(report);
+    reportGenerator.process();
   }
 }

@@ -67,7 +67,7 @@ public class WebsiteScreenshots {
       folderName = "home";
     }
     else {
-      folderName = path.replace("/", "__");
+      folderName = path.replace("/", "__").replaceAll("[^a-zA-Z0-9.-]", "_");
     }
     return folderName;
   }

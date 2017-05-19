@@ -7,7 +7,7 @@ domains:
   base: "http://webserver.dev/enso"
   compare: "http://webserver.dev/dev"
 
-workers: 1
+workers: 4
 
 screen_widths:
   - 320

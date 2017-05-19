@@ -2,6 +2,7 @@ package com.ubm.jwraith.crawler;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.By;
@@ -17,12 +18,12 @@ public class CrawlerWorker implements Runnable {
   
   WebDriver driver = new HtmlUnitDriver();
   
-  private BlockingQueue<String> checkedUrls;
+  private ConcurrentMap<String, String> checkedUrls;
   private BlockingQueue<String> pendingUrls;
   private String domain;
   private List<String> spiderSkips;
 
-  public CrawlerWorker(String domain, List<String> spiderSkips, BlockingQueue<String> checkedUrls, BlockingQueue<String> pendingUrls) {
+  public CrawlerWorker(String domain, List<String> spiderSkips, ConcurrentMap<String, String> checkedUrls, BlockingQueue<String> pendingUrls) {
     this.domain = domain;
     this.spiderSkips = spiderSkips;
     this.checkedUrls = checkedUrls;
@@ -66,7 +67,7 @@ public class CrawlerWorker implements Runnable {
     List<WebElement> elements = driver.findElements(By.tagName("a"));
     
     System.out.println("Cheking: " + path);
-    checkedUrls.put(path);    
+    checkedUrls.putIfAbsent(path, path); 
     
     for (WebElement element : elements) {
       String url = element.getAttribute("href");
@@ -87,7 +88,7 @@ public class CrawlerWorker implements Runnable {
 	  }
 	}		
 	
-	if (!(skip || checkedUrls.contains(url) || pendingUrls.contains(url))) {
+	if (!(skip || checkedUrls.containsKey(url) || pendingUrls.contains(url))) {
 	  pendingUrls.add(url);
 	  System.out.println("Added: " + url);
 	}

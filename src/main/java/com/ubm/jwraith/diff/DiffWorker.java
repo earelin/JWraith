@@ -21,8 +21,8 @@ public class DiffWorker implements Runnable {
   private final String baseFolder;
   private final String compareFolder;
   private final List<Integer> screenWidths;
-  private BlockingQueue<String> pendingPaths;
-  private BlockingQueue<PageReport> pageReports;
+  private final BlockingQueue<String> pendingPaths;
+  private final BlockingQueue<PageReport> pageReports;
 
   public DiffWorker(
 	  String baseFolder,
@@ -93,7 +93,7 @@ public class DiffWorker implements Runnable {
 	    } 
 	    else {
 	      Color color = new Color(p1[i * baseImage.getWidth() + j]);
-	      Color transparent = new Color(color.getRed(), color.getGreen(), color.getBlue(), 51);
+	      Color transparent = new Color(color.getRed(), color.getGreen(), color.getBlue(), 175);
 	      diffP[i * width + j] = transparent.getRGB();
 	    }
 	  }
