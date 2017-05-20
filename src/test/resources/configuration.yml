@@ -1,7 +1,7 @@
-browser: "phantomjs"
+browser: "firefox"
 driver_executable: "/usr/local/bin/phantomjs"
 
-directory: "shots"
+directory: "custom_shots"
 
 domains:
   base: "file://src/test/resources/webs/website1"

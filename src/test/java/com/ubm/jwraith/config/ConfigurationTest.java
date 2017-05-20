@@ -1,6 +1,7 @@
 package com.ubm.jwraith.config;
 
 import java.io.FileNotFoundException;
+import java.net.URL;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,21 +12,31 @@ import org.junit.Test;
  */
 public class ConfigurationTest {
   
+  public static Configuration configuration;
+  
   @BeforeClass
   public static void loadConfigurationData() throws ConfigurationFileException, FileNotFoundException {
-    Configuration configuration = Configuration.getInstance();
-    configuration.read("src/test/resources/configuration.yml");
+    configuration = Configuration.getInstance();    
+  }
+  
+  @Test(expected=FileNotFoundException.class)
+  public void configurationFileNotFound() throws FileNotFoundException, ConfigurationFileException {    
+    configuration.read("erroneus_filename");
   }
   
   @Test
-  public void loadBrowser() {
-    Configuration configuration = Configuration.getInstance();
+  public void loadedBrowser() throws ConfigurationFileException, FileNotFoundException {
+    String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
+    configuration.read(configurationFile);
     assertEquals(configuration.getBrowser(), "phantomjs");
   }
   
   @Test
-  public void loadDirectory() {
-    Configuration configuration = Configuration.getInstance();
-    assertEquals(configuration.getDirectory(), "shots");
+  public void loadedDirectory() throws ConfigurationFileException, FileNotFoundException {
+    String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
+    configuration.read(configurationFile);
+    assertEquals(configuration.getDirectory(), "custom_shots");
   }
+  
+  
 }
