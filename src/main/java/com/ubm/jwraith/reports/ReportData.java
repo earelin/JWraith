@@ -1,6 +1,5 @@
 package com.ubm.jwraith.reports;
 
-import com.ubm.jwraith.config.Domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +12,8 @@ public class ReportData {
   
   private Date date;
   private List<PageReport> pages = new ArrayList<>();
-  private Domain baseDomain;
-  private Domain compareDomain;
+  private String baseDomain;
+  private String compareDomain;
 
   public void addPageResult(PageReport result) {
     pages.add(result);
@@ -41,19 +40,19 @@ public class ReportData {
     this.date = date;
   }
 
-  public Domain getBaseDomain() {
+  public String getBaseDomain() {
     return baseDomain;
   }
 
-  public void setBaseDomain(Domain baseDomain) {
+  public void setBaseDomain(String baseDomain) {
     this.baseDomain = baseDomain;
   }
 
-  public Domain getCompareDomain() {
+  public String getCompareDomain() {
     return compareDomain;
   }
 
-  public void setCompareDomain(Domain compareDomain) {
+  public void setCompareDomain(String compareDomain) {
     this.compareDomain = compareDomain;
   }
   

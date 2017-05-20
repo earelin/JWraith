@@ -68,6 +68,12 @@ public class DisplayReport implements Comparable<DisplayReport> {
   public int compareTo(DisplayReport o) {
     return Comparators.WIDTH.compare(this, o);
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj.getClass().equals(DisplayReport.class)
+	    && ((DisplayReport)obj).getWidth() == this.width;
+  }
   
   public static class Comparators {
     public static final Comparator<DisplayReport> WIDTH =

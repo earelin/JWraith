@@ -1,0 +1,24 @@
+browser: "phantomjs"
+driver_executable: "/usr/local/bin/phantomjs"
+
+directory: "shots"
+
+domains:
+  base: "file://src/test/resources/webs/website1"
+  compare: "file://src/test/resources/webs/website1"
+
+workers: 4
+
+screen_widths:
+  - 320
+  - 1280
+
+paths_file: "paths_simple.txt"
+
+spider_skips:
+  - "^/ajax/.*"
+  - "^/calendar/ical/.*"
+
+reports:
+  thumbnail_width: 300
+  thumbnail_height: 200## YAML Template.
