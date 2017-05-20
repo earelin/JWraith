@@ -1,18 +1,46 @@
 apply plugin: 'java'
 apply plugin: 'findbugs'
 apply plugin: 'application'
+apply plugin: 'org.junit.platform.gradle.plugin'
+
+ext.junitJupiterVersion  = '5.0.0-M4'
+ext.seleniumVersion = 
 
 sourceCompatibility = 1.8
 version = '0.1'
 
+compileJava.options*.compilerArgs = [
+	"-Xlint:serial", "-Xlint:varargs", "-Xlint:cast", "-Xlint:classfile",
+	"-Xlint:dep-ann", "-Xlint:divzero", "-Xlint:empty", "-Xlint:finally",
+	"-Xlint:overrides", "-Xlint:path", "-Xlint:processing", "-Xlint:static",
+	"-Xlint:try", "-Xlint:fallthrough", "-Xlint:rawtypes", "-Xlint:deprecation",
+	"-Xlint:unchecked", "-Xlint:-options"]
+
+compileTestJava.options*.compilerArgs = [
+	"-Xlint:serial", "-Xlint:-varargs", "-Xlint:cast", "-Xlint:classfile",
+	"-Xlint:dep-ann", "-Xlint:divzero", "-Xlint:empty", "-Xlint:finally",
+	"-Xlint:overrides", "-Xlint:path", "-Xlint:processing", "-Xlint:static",
+	"-Xlint:try", "-Xlint:-fallthrough", "-Xlint:-rawtypes", "-Xlint:-deprecation",
+	"-Xlint:-unchecked", "-Xlint:-options"]
+
 mainClassName = "com.ubm.jwraith.JWraith"
 
 jar {
+  baseName = 'jwraith'
   manifest {
     attributes 'Main-Class': 'com.ubm.jwraith.JWraith'
   }
   from {
     configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+}
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4"
   }
 }
 
@@ -37,6 +65,10 @@ dependencies {
   compile 'org.apache.commons:commons-io:1.3.2'
   
   compile 'org.thymeleaf:thymeleaf:3.0.6.RELEASE'
+  
+  // JUnit Jupiter API and TestEngine implementation
+  testCompile("org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}")
+  testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 }
 
 tasks.withType(FindBugs) {

@@ -84,7 +84,7 @@ public class ScreenshotsWorker implements Runnable  {
     }
     
     for (int screenWidth : screenWidths) {
-      driver.manage().window().setSize(new Dimension(screenWidth, (int) screenWidth / (16 / 9)));
+      driver.manage().window().setSize(new Dimension(screenWidth, screenWidth / (16 / 9)));
       driver.get(domain + path);
       
 //      Long screenHeight = (Long) ((JavascriptExecutor) driver).executeScript("return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");

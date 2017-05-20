@@ -51,24 +51,24 @@ public class Configuration {
       throw new ConfigurationFileException("Systax error on configuration file: " + ex.getMessage());
     }
 
-    Map configMap = (Map)object;
+    Map<String, Object> configMap = (Map) object;
 
     if (configMap.containsKey("directory")) {
       directory = (String) configMap.get("directory");
     }
 
     if (configMap.containsKey("domains")) {
-      Map domainsData = (Map) configMap.get("domains");
+      Map<String, String> domainsData = (Map) configMap.get("domains");
       
       if (domainsData.containsKey("base")) {
-	baseDomain = (String) domainsData.get("base");
+	baseDomain = domainsData.get("base");
       } 
       else {
 	throw new ConfigurationFileException("Missing base domain key on configuration file.");
       }
     
       if (domainsData.containsKey("compare")) {
-	compareDomain = (String) domainsData.get("compare");
+	compareDomain = domainsData.get("compare");
       }
 
     } else {
@@ -80,9 +80,9 @@ public class Configuration {
     }
 
     if (configMap.containsKey("screen_widths")) {
-      List configDisplays = (List) configMap.get("screen_widths");
-      for (Object display : configDisplays) {
-	screenWidths.add((Integer.parseInt((String) display)));
+      List<String> configDisplays = (List<String>) configMap.get("screen_widths");
+      for (String display : configDisplays) {
+	screenWidths.add((Integer.parseInt(display)));
       }
     } else {
       throw new ConfigurationFileException("Missing displays key on configuration file.");
@@ -93,7 +93,7 @@ public class Configuration {
     }
     
     if (configMap.containsKey("spider_skips")) {
-      spiderSkips = (List) configMap.get("spider_skips");
+      spiderSkips = (List<String>) configMap.get("spider_skips");
     }
     
   }

@@ -53,7 +53,7 @@ public class WebsiteCrawler {
       }
     } while (workersAlive);
     
-    List<String> urls = new ArrayList(checkedUrls.keySet());
+    List<String> urls = new ArrayList<>(checkedUrls.keySet());
     Collections.sort(urls);
     
     FileWriter fw = null;

@@ -1,7 +1,6 @@
 package com.ubm.jwraith.diff;
 
 import com.ubm.jwraith.config.Configuration;
-import com.ubm.jwraith.reports.ReportData;
 import com.ubm.jwraith.reports.PageReport;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ public class ScreenshotsDiff {
       }
     } while (workersAlive);
     
-    return new ArrayList(pageReports);
+    return new ArrayList<>(pageReports);
   }
   
 }
