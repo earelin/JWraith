@@ -19,13 +19,19 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
  */
 public class WebsiteReportGenerator {
   
+  private static WebsiteReportGenerator instance;
+  
   private final Configuration configuration = Configuration.getInstance();
   private final TemplateEngine templateEngine;
-  private final ReportData report;
 
-  public WebsiteReportGenerator(ReportData report) {
-    this.report = report;
-    
+  public static WebsiteReportGenerator getInstance() {
+    if (instance == null) {
+      instance = new WebsiteReportGenerator();
+    }
+    return instance;
+  }
+  
+  private WebsiteReportGenerator() { 
     // Configuring thymeleaf
     templateEngine = new TemplateEngine();
     final ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
@@ -34,7 +40,7 @@ public class WebsiteReportGenerator {
     templateEngine.setTemplateResolver(resolver);
   }
   
-  public void process() {
+  public void process(ReportData report) {
     PrintWriter writer = null;
     try {
       final Context ctx = new Context();

@@ -14,14 +14,20 @@ import java.util.logging.Logger;
  */
 public class WebsiteThumbnails {
   
+  private static WebsiteThumbnails instance;
+  
   private final Configuration configuration = Configuration.getInstance();
-  private final ReportData report;
 
-  public WebsiteThumbnails(ReportData report) {
-    this.report = report;
+  private WebsiteThumbnails() {}
+  
+  public static WebsiteThumbnails getInstance() {
+    if (instance == null) {
+      instance = new WebsiteThumbnails();
+    }
+    return instance;
   }
   
-  public void process() {
+  public void process(ReportData report) {
     BlockingQueue<PageReport> pendingPages = new LinkedBlockingQueue<>(report.getPageResult());
     
     // Generate diff threads

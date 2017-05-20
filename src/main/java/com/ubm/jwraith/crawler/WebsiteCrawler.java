@@ -18,17 +18,25 @@ import java.util.logging.Logger;
  * @author Xavier Carriba
  */
 public class WebsiteCrawler {
+  
+  private static WebsiteCrawler instance;
 
   private final Configuration configuration = Configuration.getInstance();
   private final ConcurrentMap<String, String> checkedUrls = new ConcurrentHashMap<>();
   private final BlockingQueue<String> pendingUrls = new LinkedBlockingQueue<>();
-  private final String domain;
   
-  public WebsiteCrawler(String domain) {
-    this.domain = domain;
+  public static WebsiteCrawler getInstance() {
+    if (instance == null) {
+      instance = new WebsiteCrawler();
+    }
+    return instance;
   }
   
-  public List<String> process() {
+  private WebsiteCrawler() {}
+  
+  public List<String> crawl() {
+    String domain = configuration.getBaseDomain();
+    
     pendingUrls.add("/");
     
     Thread[] workers = new Thread[configuration.getWorkers()];
@@ -56,23 +64,6 @@ public class WebsiteCrawler {
     List<String> urls = new ArrayList<>(checkedUrls.keySet());
     Collections.sort(urls);
     
-    FileWriter fw = null;
-    try {
-      fw = new FileWriter(configuration.getSpiderFile());
-      for (String url : urls) {
-	fw.write(url + "\n");
-      }
-    } catch (IOException ex) {
-      Logger.getLogger(WebsiteCrawler.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
-      if (fw != null) {
-	try {
-	  fw.close();
-	} catch (IOException ex) {
-	  Logger.getLogger(WebsiteCrawler.class.getName()).log(Level.SEVERE, null, ex);
-	}
-      }
-    }
     return urls;
   }
   

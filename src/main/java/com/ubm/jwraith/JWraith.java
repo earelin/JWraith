@@ -9,9 +9,12 @@ import com.ubm.jwraith.reports.PageReport;
 import com.ubm.jwraith.reports.WebsiteReportGenerator;
 import com.ubm.jwraith.reports.WebsiteThumbnails;
 import com.ubm.jwraith.screenshots.WebsiteScreenshots;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,14 @@ import java.util.stream.Stream;
  *
  * @author Xavier Carriba
  */
-public class JWraith {  
+public class JWraith {
+  
+  private static Configuration configuration = Configuration.getInstance();
+  private static WebsiteCrawler crawler = WebsiteCrawler.getInstance();
+  private static SeleniumService seleniumService = SeleniumService.getInstance();
+  private static ScreenshotsDiff screenshotsDiff = ScreenshotsDiff.getInstance();
+  private static WebsiteThumbnails websiteThumbnails = WebsiteThumbnails.getInstance();
+  private static WebsiteReportGenerator reportGenerator = WebsiteReportGenerator.getInstance();
   
   public static void main(String[] args) {
     String configurationFilePath = "configuration.yml";
@@ -39,7 +49,6 @@ public class JWraith {
       return;
     }
     
-    Configuration configuration = Configuration.getInstance();
     configuration.setMode(mode);
     try {
       configuration.read(configurationFilePath);
@@ -50,32 +59,36 @@ public class JWraith {
     
     switch (args[0]) {
       case "spider":
-	launchSpider(configuration);
+	paths = crawler.crawl();
+	savePaths(configuration.getPathsFile(), paths);
 	break;
+      case "brosers":
+	paths = loadPaths(configuration.getPathsFile());
+	
       case "capture":
-	paths = loadPaths(configuration);
-	launchScreenshots(configuration, configuration.getBaseDomain(), "base", paths);
-	launchScreenshots(configuration, configuration.getCompareDomain(), "compare", paths);
+	paths = loadPaths(configuration.getPathsFile());
+	launchScreenshots(configuration.getBaseDomain(), "base", paths);
+	launchScreenshots(configuration.getCompareDomain(), "compare", paths);
 	ReportData report = launchDiffCalculationCapture(
 		configuration.getDirectory(), configuration.getDirectory(), paths);
 	lauchReportGenerator(report);
 	break;
       case "history":
-	paths = loadPaths(configuration);
-	launchScreenshots(configuration, configuration.getBaseDomain(), "base", paths);
+	paths = loadPaths(configuration.getPathsFile());
+	launchScreenshots(configuration.getBaseDomain(), "base", paths);
 	break;
       case "latest":
-	paths = loadPaths(configuration);
-	launchScreenshots(configuration, configuration.getBaseDomain(), "compare", paths);
+	paths = loadPaths(configuration.getPathsFile());
+	launchScreenshots(configuration.getBaseDomain(), "compare", paths);
 	break;
       default:
 	System.out.println("Unsupported operation '" + args[0] + "'.");
     }
   }
   
-  private static List<String> loadPaths(Configuration configuration) {
+  private static List<String> loadPaths(String filePath) {
     List<String> paths = new ArrayList<>();
-    try (Stream<String> stream = Files.lines(Paths.get(configuration.getSpiderFile()))) {
+    try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
       String[] urls = stream.toArray(String[]::new);
       for (String url : urls) {
 	paths.add(url);
@@ -86,28 +99,31 @@ public class JWraith {
     return paths;
   }
   
-  private static void launchSpider(Configuration configuration) {
-    WebsiteCrawler crawler = new WebsiteCrawler(configuration.getBaseDomain());
-    crawler.process();
+  private static void savePaths(String filePath, List<String> paths) {
+    Path path = Paths.get(filePath);
+    try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"))) {
+      for (String url : paths) {
+	writer.write(url);
+      }
+    } catch(IOException ex) {
+      Logger.getLogger(JWraith.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }
 
-  private static void launchScreenshots(Configuration configuration, String domain, String domainLabel, List<String> paths) {
+  private static void launchScreenshots(String domain, String domainLabel, List<String> paths) {
     WebsiteScreenshots screenshots = new WebsiteScreenshots(domain, domainLabel, configuration.getDirectory(), paths);
     screenshots.process();
   }
   
   private static ReportData launchDiffCalculationCapture(String baseFolder, String compareFolder, List<String> paths) {
-    ScreenshotsDiff diffs = new ScreenshotsDiff(baseFolder, compareFolder, paths);
-    List<PageReport> pageReports = diffs.process();
+    List<PageReport> pageReports = screenshotsDiff.process(baseFolder, compareFolder, paths);
     ReportData report = new ReportData();
     report.setPages(pageReports);    
     return report;
   }
   
   private static void lauchReportGenerator(ReportData report) {
-    WebsiteThumbnails websiteThumbnails = new WebsiteThumbnails(report);
-    websiteThumbnails.process();
-    WebsiteReportGenerator reportGenerator = new WebsiteReportGenerator(report);
-    reportGenerator.process();
+    websiteThumbnails.process(report);
+    reportGenerator.process(report);
   }
 }

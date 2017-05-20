@@ -22,7 +22,6 @@ public class Configuration {
   private int workers = 1;
   private String browser = "phantomjs";
   private String directory = "shots";
-  private Map<String, String> paths;
   private int fuzz = 0;
   private String historyDir = "shots_history";
   private String mode;
@@ -142,7 +141,7 @@ public class Configuration {
     return spiderSkips;
   }
 
-  public String getSpiderFile() {
+  public String getPathsFile() {
     return pathsFile;
   }
 

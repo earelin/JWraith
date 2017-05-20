@@ -14,19 +14,21 @@ import java.util.logging.Logger;
  * @author Xavier Carriba
  */
 public class ScreenshotsDiff {
-    
-  private final String baseFolder;
-  private final String compareFolder;
-  private List<String> paths;
+
   private Configuration configuration = Configuration.getInstance();
   
-  public ScreenshotsDiff(String baseFolder, String compareFolder, List<String> paths) {
-    this.baseFolder = baseFolder;
-    this.compareFolder = compareFolder;
-    this.paths = paths;
+  private static ScreenshotsDiff instance;
+  
+  public static ScreenshotsDiff getInstance() {
+    if (instance == null) {
+      instance = new ScreenshotsDiff();
+    }
+    return instance;
   }
   
-  public List<PageReport> process() {
+  private ScreenshotsDiff() {}
+  
+  public List<PageReport> process(String baseFolder, String compareFolder, List<String> paths) {
     BlockingQueue<String> pendingPaths = new LinkedBlockingQueue<>(paths);
     BlockingQueue<PageReport> pageReports = new LinkedBlockingQueue<>();
     
