@@ -48,7 +48,7 @@ public class WebsiteReportGenerator {
       DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
       ctx.setVariable("report_date", dateFormat.format(new Date()));
       ctx.setVariable("pages", report.getPages());
-      ctx.setVariable("threshold", configuration.getThreshold());
+      ctx.setVariable("threshold", configuration.getReport().getThreshold());
       
       writer = new PrintWriter(configuration.getDirectory() + "/index.html");   
       templateEngine.process("main.html", ctx, writer);  

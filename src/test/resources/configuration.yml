@@ -1,5 +1,10 @@
-browser: "firefox"
-driver_executable: "/usr/local/bin/phantomjs"
+browser_name: "firefox"
+driver_executable: "/usr/local/bin/geckodriver"
+
+# selenium grid example
+#
+#browser_version: 53
+#remote_address: "http://localhost:4444/wd/hub"
 
 directory: "custom_shots"
 
@@ -19,6 +24,26 @@ spider_skips:
   - "^/ajax/.*"
   - "^/calendar/ical/.*"
 
+multiple_browsers:
+  - label: "Firefox last"
+    browser_name: "firefox"
+    driver_executable: "/usr/local/bin/geckodriver"
+  - label: "Chrome last"
+    browser_name: "chrome"
+    driver_executable: "/usr/local/bin/chromedriver"
+    
+# selenium grid example
+#
+#multibrowser:
+#  - label: "Firefox 53 Linux"
+#    browser: "firefox"
+#    browser_version: 53
+#    remote_address: "http://localhost:4444/wd/hub"
+#  - label: "Chrome last"
+#    browser: "chrome"
+#    browser_version: 58
+#    remote_address: "http://localhost:4444/wd/hub"
+
 reports:
   thumbnail_width: 300
-  thumbnail_height: 200## YAML Template.
+  thumbnail_height: 300

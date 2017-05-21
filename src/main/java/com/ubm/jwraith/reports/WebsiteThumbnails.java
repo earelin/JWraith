@@ -28,12 +28,13 @@ public class WebsiteThumbnails {
   }
   
   public void process(ReportData report) {
+    ReportConfiguration reportConfiguration = configuration.getReport();
     BlockingQueue<PageReport> pendingPages = new LinkedBlockingQueue<>(report.getPageResult());
     
     // Generate diff threads
     Thread[] workers = new Thread[configuration.getWorkers()];
     for (int i = 0; i < configuration.getWorkers(); i++) {
-      workers[i] = new Thread(new ThumbnailsWorker(pendingPages, configuration.getThumbnailWidth(), configuration.getThumbnailHeight(), configuration.getDirectory()));
+      workers[i] = new Thread(new ThumbnailsWorker(pendingPages, reportConfiguration.getThumbnailWidth(), reportConfiguration.getThumbnailHeight(), configuration.getDirectory()));
       workers[i].start();
     }
     

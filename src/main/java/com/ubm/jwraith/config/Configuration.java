@@ -2,6 +2,8 @@ package com.ubm.jwraith.config;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
+import com.ubm.jwraith.reports.ReportConfiguration;
+import com.ubm.jwraith.selenium.BrowserConfiguration;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -16,20 +18,18 @@ public class Configuration {
 
   private static Configuration instance;
 
-  private String baseDomain;
-  private String compareDomain;
+  private BrowserConfiguration defaultBrowser;
+  private String baseDomain = null;
+  private String compareDomain = null;
   private final List<Integer> screenWidths = new ArrayList<>();
-  private int workers = 1;
-  private String browser = "phantomjs";
+  private int workers = 1;  
   private String directory = "shots";
-  private int fuzz = 0;
-  private String historyDir = "shots_history";
+  private String historyDirectory = "shots_history";
   private String mode;
-  private List<String> spiderSkips;
-  private String pathsFile;
-  private int thumbnailWidth = 300;
-  private int thumbnailHeight = 300;
-  private int threshold = 15;
+  private List<String> spiderSkips = null;
+  private String pathsFile = null;
+  private List<BrowserConfiguration> multipleBrowsers = null;
+  private ReportConfiguration report = new ReportConfiguration();
 
   public static Configuration getInstance() {
     if (instance == null) {
@@ -50,10 +50,16 @@ public class Configuration {
       throw new ConfigurationFileException("Systax error on configuration file: " + ex.getMessage());
     }
 
-    Map<String, Object> configMap = (Map) object;
+    Map<String, Object> configMap = (Map<String, Object>) object;
+    
+    defaultBrowser = parseBrowserConfiguration(configMap);
 
     if (configMap.containsKey("directory")) {
       directory = (String) configMap.get("directory");
+    }
+    
+    if (configMap.containsKey("history_directory")) {
+      historyDirectory = (String) configMap.get("history_directory");
     }
 
     if (configMap.containsKey("domains")) {
@@ -95,22 +101,68 @@ public class Configuration {
       spiderSkips = (List<String>) configMap.get("spider_skips");
     }
     
+    if (configMap.containsKey("multiple_browsers")) {
+      List<Map<String, Object>> multipleBrowsersRaw = (List<Map<String, Object>>) configMap.get("multiple_browsers");
+      if (multipleBrowsersRaw.size() > 0) {
+	multipleBrowsers = new ArrayList<>(); 
+      }
+      for (Map<String, Object> browserConfig : multipleBrowsersRaw) {
+	multipleBrowsers.add(parseBrowserConfiguration(browserConfig));
+      }
+    }
+    
+    if (configMap.containsKey("reports")) {
+      parseReportConfiguration((Map<String, Object>) configMap.get("reports"));
+    }
+    
   }
-
-  public String getBrowser() {
+  
+  private void parseReportConfiguration(Map<String, Object> configMap) {
+    if (configMap.containsKey("threshold")) {
+      report.setThreshold(Integer.parseInt((String) configMap.get("threshold")));
+    }
+    
+    if (configMap.containsKey("thumbnail_width")) {
+      report.setThreshold(Integer.parseInt((String) configMap.get("thumbnail_width")));
+    }
+    
+    if (configMap.containsKey("thumbnail_height")) {
+      report.setThreshold(Integer.parseInt((String) configMap.get("thumbnail_height")));
+    }
+  }
+  
+  private BrowserConfiguration parseBrowserConfiguration(Map<String, Object> configMap) {
+    BrowserConfiguration browser = new BrowserConfiguration();
+    
+    if (configMap.containsKey("browser_label")) {
+      browser.setLabel((String) configMap.get("browser_label"));
+    }
+    
+    if (configMap.containsKey("browser_name")) {
+      browser.setName((String) configMap.get("browser_name"));
+    }
+            
+    if (configMap.containsKey("driver_executable")) {
+      browser.setDriverExecutable((String) configMap.get("driver_executable"));
+    }
+    
+    if (configMap.containsKey("browser_version")) {
+      browser.setDriverExecutable((String) configMap.get("browser_version"));
+    }
+    
     return browser;
   }
 
+  public BrowserConfiguration getDefaultBrowser() {
+    return defaultBrowser;
+  }
+  
   public String getDirectory() {
     return directory;
   }
 
-  public int getFuzz() {
-    return fuzz;
-  }
-
-  public String getHistoryDir() {
-    return historyDir;
+  public String getHistoryDirectory() {
+    return historyDirectory;
   }
 
   public int getWorkers() {
@@ -145,16 +197,12 @@ public class Configuration {
     return pathsFile;
   }
 
-  public int getThumbnailWidth() {
-    return thumbnailWidth;
+  public List<BrowserConfiguration> getMultipleBrowsers() {
+    return multipleBrowsers;
   }
 
-  public int getThumbnailHeight() {
-    return thumbnailHeight;
-  }
-
-  public int getThreshold() {
-    return threshold;
+  public ReportConfiguration getReport() {
+    return report;
   }
 
 }

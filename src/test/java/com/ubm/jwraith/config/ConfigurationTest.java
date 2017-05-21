@@ -25,13 +25,6 @@ public class ConfigurationTest {
   }
   
   @Test
-  public void loadedBrowser() throws ConfigurationFileException, FileNotFoundException {
-    String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
-    configuration.read(configurationFile);
-    assertEquals(configuration.getBrowser(), "phantomjs");
-  }
-  
-  @Test
   public void loadedDirectory() throws ConfigurationFileException, FileNotFoundException {
     String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
     configuration.read(configurationFile);

@@ -1,7 +1,13 @@
-browser: "phantomjs"
+browser_name: "phantomjs"
 driver_executable: "/usr/local/bin/phantomjs"
 
-directory: "enso"
+# selenium grid example
+#browse_name: "firefox"
+#browser_version: 53
+#remote_address: "http://localhost:4444/wd/hub"
+
+directory: "shots"
+history_directory: "shots_history"
 
 domains:
   base: "http://webserver.dev/enso"
@@ -19,6 +25,27 @@ spider_skips:
   - "^/ajax/.*"
   - "^/calendar/ical/.*"
 
+multiple_browsers:
+  - browser_label: "Firefox last"
+    browser_name: "firefox"
+    driver_executable: "/usr/local/bin/geckodriver"
+  - browser_label: "Chrome last"
+    browser_name: "chrome"
+    driver_executable: "/usr/local/bin/chromedriver"
+    
+# selenium grid example
+#
+#multibrowser:
+#  - label: "Firefox 53 Linux"
+#    browser: "firefox"
+#    browser_version: 53
+#    remote_address: "http://localhost:4444/wd/hub"
+#  - label: "Chrome last"
+#    browser: "chrome"
+#    browser_version: 58
+#    remote_address: "http://localhost:4444/wd/hub"
+
 reports:
+  threshold: 15
   thumbnail_width: 300
-  thumbnail_height: 200
+  thumbnail_height: 300
