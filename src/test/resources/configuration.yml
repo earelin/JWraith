@@ -7,10 +7,11 @@ driver_executable: "/usr/local/bin/geckodriver"
 #remote_address: "http://localhost:4444/wd/hub"
 
 directory: "custom_shots"
+history_directory: "custom_history_shots"
 
 domains:
   base: "file://src/test/resources/webs/website1"
-  compare: "file://src/test/resources/webs/website1"
+  compare: "file://src/test/resources/webs/website2"
 
 workers: 4
 
@@ -25,10 +26,10 @@ spider_skips:
   - "^/calendar/ical/.*"
 
 multiple_browsers:
-  - label: "Firefox last"
+  - browser_label: "Firefox last"
     browser_name: "firefox"
     driver_executable: "/usr/local/bin/geckodriver"
-  - label: "Chrome last"
+  - browser_label: "Chrome last"
     browser_name: "chrome"
     driver_executable: "/usr/local/bin/chromedriver"
     
@@ -45,5 +46,6 @@ multiple_browsers:
 #    remote_address: "http://localhost:4444/wd/hub"
 
 reports:
+  threshold: 15
   thumbnail_width: 300
   thumbnail_height: 300

@@ -3,7 +3,7 @@ package com.ubm.jwraith.config;
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
 import com.ubm.jwraith.reports.ReportConfiguration;
-import com.ubm.jwraith.selenium.BrowserConfiguration;
+import com.ubm.jwraith.browser.BrowserConfiguration;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 package com.ubm.jwraith.crawler;
 
+import com.ubm.jwraith.browser.BrowserConfiguration;
+import com.ubm.jwraith.browser.SeleniumFactory;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -16,18 +18,19 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
  */
 public class CrawlerWorker implements Runnable {
   
-  WebDriver driver = new HtmlUnitDriver();
-  
-  private ConcurrentMap<String, String> checkedUrls;
-  private BlockingQueue<String> pendingUrls;
-  private String domain;
-  private List<String> spiderSkips;
+  private final SeleniumFactory seleniumFactory = SeleniumFactory.getInstance();
+  private WebDriver driver;
+  private final ConcurrentMap<String, String> checkedUrls;
+  private final BlockingQueue<String> pendingUrls;
+  private final String domain;
+  private final List<String> spiderSkips;
 
   public CrawlerWorker(String domain, List<String> spiderSkips, ConcurrentMap<String, String> checkedUrls, BlockingQueue<String> pendingUrls) {
     this.domain = domain;
     this.spiderSkips = spiderSkips;
     this.checkedUrls = checkedUrls;
     this.pendingUrls = pendingUrls;
+    this.driver = seleniumFactory.getDriver(new BrowserConfiguration());
   }
   
   @Override
@@ -51,7 +54,7 @@ public class CrawlerWorker implements Runnable {
 	processUrl(url);
 	if (i == 50) {
 	  driver.quit();
-	  driver = new HtmlUnitDriver();
+	  driver = seleniumFactory.getDriver(new BrowserConfiguration());
 	  i = 0;
 	}
 	else {

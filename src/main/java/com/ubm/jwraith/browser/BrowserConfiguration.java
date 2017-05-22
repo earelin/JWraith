@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ubm.jwraith.selenium;
+package com.ubm.jwraith.browser;
 
 /**
  *
@@ -12,7 +12,7 @@ package com.ubm.jwraith.selenium;
 public class BrowserConfiguration {
   
   private String label = null;
-  private String name = "phantomjs";
+  private String name = "htmlunit";
   private String driverExecutable = null;
   private String version = null;
   private String remoteAddress = null;

@@ -40,7 +40,7 @@ public class WebsiteScreenshots {
     // Generate screenshots threads
     Thread[] workers = new Thread[configuration.getWorkers()];
     for (int i = 0; i < configuration.getWorkers(); i++) {
-      workers[i] = new Thread(new ScreenshotsWorker(domain, domainLabel, folder, configuration.getScreenWidths(), pendingUrls));
+      workers[i] = new Thread(new ScreenshotsWorker(configuration.getDefaultBrowser(), domain, domainLabel, folder, configuration.getScreenWidths(), pendingUrls));
       workers[i].start();
     }
     

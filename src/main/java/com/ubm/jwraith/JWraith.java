@@ -1,6 +1,6 @@
 package com.ubm.jwraith;
 
-import com.ubm.jwraith.selenium.SeleniumFactory;
+import com.ubm.jwraith.browser.SeleniumFactory;
 import com.ubm.jwraith.config.ConfigurationFileException;
 import com.ubm.jwraith.config.Configuration;
 import com.ubm.jwraith.crawler.WebsiteCrawler;
@@ -31,7 +31,7 @@ public class JWraith {
   
   private static Configuration configuration = Configuration.getInstance();
   private static WebsiteCrawler crawler = WebsiteCrawler.getInstance();
-  private static SeleniumFactory seleniumService = SeleniumFactory.getInstance();
+  private static SeleniumFactory seleniumFactory = SeleniumFactory.getInstance();
   private static ScreenshotsDiff screenshotsDiff = ScreenshotsDiff.getInstance();
   private static WebsiteThumbnails websiteThumbnails = WebsiteThumbnails.getInstance();
   private static WebsiteReportGenerator reportGenerator = WebsiteReportGenerator.getInstance();
