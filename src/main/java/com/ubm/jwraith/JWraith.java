@@ -35,6 +35,7 @@ public class JWraith {
   private static ScreenshotsDiff screenshotsDiff = ScreenshotsDiff.getInstance();
   private static WebsiteThumbnails websiteThumbnails = WebsiteThumbnails.getInstance();
   private static WebsiteReportGenerator reportGenerator = WebsiteReportGenerator.getInstance();
+  private static WebsiteScreenshots websiteScreenshots = WebsiteScreenshots.getInstance();
   
   public static void main(String[] args) {
     String configurationFilePath = "configuration.yml";
@@ -112,8 +113,7 @@ public class JWraith {
   }
 
   private static void launchScreenshots(String domain, String domainLabel, List<String> paths) {
-    WebsiteScreenshots screenshots = new WebsiteScreenshots(domain, domainLabel, configuration.getDirectory(), paths);
-    screenshots.process();
+    websiteScreenshots.process(domain, domainLabel, configuration.getDirectory(), paths);
   }
   
   private static ReportData launchDiffCalculationCapture(String baseFolder, String compareFolder, List<String> paths) {
@@ -127,4 +127,5 @@ public class JWraith {
     websiteThumbnails.process(report);
     reportGenerator.process(report);
   }
+  
 }

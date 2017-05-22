@@ -1,8 +1,6 @@
 package com.ubm.jwraith.crawler;
 
 import com.ubm.jwraith.config.Configuration;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

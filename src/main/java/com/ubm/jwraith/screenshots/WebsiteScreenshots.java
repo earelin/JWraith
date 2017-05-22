@@ -15,20 +15,20 @@ import java.util.logging.Logger;
  */
 public class WebsiteScreenshots {
   
-  private final String domain;
-  private final String domainLabel;
-  private final List<String> paths;
-  private final Configuration configuration = Configuration.getInstance();
-  private final String folder;
+  private static WebsiteScreenshots instance;
   
-  public WebsiteScreenshots(String domain, String domainLabel, String folder, List<String> paths) {
-    this.domain = domain;
-    this.domainLabel = domainLabel;
-    this.folder = folder;
-    this.paths = paths;
+  private final Configuration configuration = Configuration.getInstance();
+  
+  public static WebsiteScreenshots getInstance() {
+    if (instance == null) {
+      instance = new WebsiteScreenshots();
+    }
+    return instance;
   }
   
-  public void process() {
+  private WebsiteScreenshots() {}
+  
+  public void process(String domain, String domainLabel, String folder, List<String> paths) {
     // Check folder
     File f = new File(folder);
     if(!f.exists()) { 
