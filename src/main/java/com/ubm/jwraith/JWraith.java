@@ -1,5 +1,6 @@
 package com.ubm.jwraith;
 
+import com.ubm.jwraith.browser.BrowserConfiguration;
 import com.ubm.jwraith.browser.SeleniumFactory;
 import com.ubm.jwraith.config.ConfigurationFileException;
 import com.ubm.jwraith.config.Configuration;
@@ -24,7 +25,8 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
- *
+ * Main class.
+ * 
  * @author Xavier Carriba
  */
 public class JWraith {
@@ -47,7 +49,7 @@ public class JWraith {
       configurationFilePath = args[1];
     }
     else {
-      System.out.println("Parameters error. Usage: enso_dummy_tester [mode] [configuration file path]");
+      System.out.println("Parameters error. Usage: jwraith [mode] [configuration file path]");
       return;
     }
     
@@ -66,7 +68,8 @@ public class JWraith {
 	break;
       case "browsers":
 	paths = loadPaths(configuration.getPathsFile());
-	
+	launchMultipleBrowserScreenshots(configuration.getBaseDomain(), "base", paths);
+	break;
       case "capture":
 	paths = loadPaths(configuration.getPathsFile());
 	launchScreenshots(configuration.getBaseDomain(), "base", paths);
@@ -111,9 +114,15 @@ public class JWraith {
       Logger.getLogger(JWraith.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
+  
+  private static void launchMultipleBrowserScreenshots(String domain, String domainLabel, List<String> paths) {
+    for (BrowserConfiguration bc : configuration.getMultipleBrowsers()) {
+      websiteScreenshots.process(bc, domain, domainLabel, configuration.getDirectory(), paths);
+    }
+  }
 
   private static void launchScreenshots(String domain, String domainLabel, List<String> paths) {
-    websiteScreenshots.process(domain, domainLabel, configuration.getDirectory(), paths);
+    websiteScreenshots.process(configuration.getDefaultBrowser(), domain, domainLabel, configuration.getDirectory(), paths);
   }
   
   private static ReportData launchDiffCalculationCapture(String baseFolder, String compareFolder, List<String> paths) {

@@ -28,7 +28,7 @@ public class ScreenshotsWorker implements Runnable  {
   private final List<Integer> screenWidths;
   private final SeleniumFactory seleniumFactory = SeleniumFactory.getInstance();
   private final WebDriver driver;
-  private BrowserConfiguration browserConfiguration;
+  private final BrowserConfiguration browserConfiguration;
   
   public ScreenshotsWorker(BrowserConfiguration browserConfiguration,
 	  String domain,
@@ -80,7 +80,7 @@ public class ScreenshotsWorker implements Runnable  {
 	driver.manage().window().setSize(new Dimension(screenWidth, screenHeight.intValue()));
       }
       
-      String fileName = WebsiteScreenshots.generateFileName(screenWidth, domainLabel);
+      String fileName = WebsiteScreenshots.generateFileName(browserConfiguration, screenWidth, domainLabel);
       File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
       try {
 	FileUtils.copyFile(scrFile, new File(folder + "/" + pathFolder + "/" + fileName));

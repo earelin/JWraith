@@ -42,8 +42,8 @@ public class ThumbnailsWorker implements Runnable {
   
   private void generatePageThumbnails(PageReport page) {
     for (DisplayReport display : page.getDisplays()) {
-      generateThumbnail(display.getBaseDomainScreenshot());
-      generateThumbnail(display.getCompareDomainScreenshot());
+      generateThumbnail(display.getScreenshot("base"));
+      generateThumbnail(display.getScreenshot("compare"));
       generateThumbnail(display.getDiffImage());
     }
   }

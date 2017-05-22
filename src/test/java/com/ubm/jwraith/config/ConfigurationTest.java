@@ -1,7 +1,9 @@
 package com.ubm.jwraith.config;
 
+import com.ubm.jwraith.browser.BrowserConfiguration;
 import com.ubm.jwraith.reports.ReportConfiguration;
 import java.io.FileNotFoundException;
+import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -73,7 +75,16 @@ public class ConfigurationTest {
     ReportConfiguration reportConfiguration = configuration.getReport();
     assertEquals(15, reportConfiguration.getThreshold());
     assertEquals(300, reportConfiguration.getThumbnailWidth());
-    assertEquals(200, reportConfiguration.getThumbnailHeight());    
+    assertEquals(200, reportConfiguration.getThumbnailHeight());
+    assertEquals("report.html", reportConfiguration.getTemplate());
+  }
+  
+  @Test
+  public void loadedMultipleBrowsersConfiguration() throws ConfigurationFileException, FileNotFoundException  {
+    String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
+    configuration.read(configurationFile);
+    List<BrowserConfiguration> browsers = configuration.getMultipleBrowsers();
+    assertEquals(2, browsers.size());
   }
 
 }

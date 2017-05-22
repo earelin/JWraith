@@ -26,9 +26,9 @@ spider_skips:
   - "^/calendar/ical/.*"
 
 multiple_browsers:
-  - browser_label: "Firefox last"
-    browser_name: "firefox"
-    driver_executable: "/usr/local/bin/geckodriver"
+  - browser_label: "PhantomJS last"
+    browser_name: "phantomjs"
+    driver_executable: "/usr/local/bin/phantomjs"
   - browser_label: "Chrome last"
     browser_name: "chrome"
     driver_executable: "/usr/local/bin/chromedriver"

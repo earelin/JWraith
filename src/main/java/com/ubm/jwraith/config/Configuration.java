@@ -129,6 +129,10 @@ public class Configuration {
     if (configMap.containsKey("thumbnail_height")) {
       report.setThumbnailHeight(Integer.parseInt((String) configMap.get("thumbnail_height")));
     }
+    
+    if (configMap.containsKey("thumbnail_height")) {
+      report.setTemplate((String) configMap.get("template"));
+    }
   }
   
   private BrowserConfiguration parseBrowserConfiguration(Map<String, Object> configMap) {

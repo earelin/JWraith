@@ -1,5 +1,6 @@
 package com.ubm.jwraith.screenshots;
 
+import com.ubm.jwraith.browser.BrowserConfiguration;
 import com.ubm.jwraith.config.Configuration;
 import com.ubm.jwraith.crawler.WebsiteCrawler;
 import java.io.File;
@@ -28,7 +29,7 @@ public class WebsiteScreenshots {
   
   private WebsiteScreenshots() {}
   
-  public void process(String domain, String domainLabel, String folder, List<String> paths) {
+  public void process(BrowserConfiguration browserConfiguration, String domain, String domainLabel, String folder, List<String> paths) {
     // Check folder
     File f = new File(folder);
     if(!f.exists()) { 
@@ -40,7 +41,7 @@ public class WebsiteScreenshots {
     // Generate screenshots threads
     Thread[] workers = new Thread[configuration.getWorkers()];
     for (int i = 0; i < configuration.getWorkers(); i++) {
-      workers[i] = new Thread(new ScreenshotsWorker(configuration.getDefaultBrowser(), domain, domainLabel, folder, configuration.getScreenWidths(), pendingUrls));
+      workers[i] = new Thread(new ScreenshotsWorker(browserConfiguration, domain, domainLabel, folder, configuration.getScreenWidths(), pendingUrls));
       workers[i].start();
     }
     
@@ -70,6 +71,10 @@ public class WebsiteScreenshots {
       folderName = path.replace("/", "__").replaceAll("[^a-zA-Z0-9.-]", "_");
     }
     return folderName;
+  }
+  
+  public static String generateFileName(BrowserConfiguration bc, int screenWidth, String domainLabel) {
+    return screenWidth + "_" + bc.getName() + "_" + domainLabel + ".png";
   }
   
   public static String generateFileName(int screenWidth, String domainLabel) {

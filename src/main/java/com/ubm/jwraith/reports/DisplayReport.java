@@ -1,6 +1,8 @@
 package com.ubm.jwraith.reports;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -9,19 +11,25 @@ import java.util.Comparator;
 public class DisplayReport implements Comparable<DisplayReport> {
   
   private int width = 0;
-  private String baseDomainScreenshot;
-  private String compareDomainScreenshot;
+  private Map<String, String> screenshots = new HashMap<>();
   private String diffImage;
   private float diffValue = 0;
 
   public DisplayReport() {}
   
-  public DisplayReport(int width, String baseDomainScreenshot, String compareDomainScreenshot, String diffImage, float diffValue) {
+  public DisplayReport(int width, Map<String, String> screenshots, String diffImage, float diffValue) {
     this.width = width;
-    this.baseDomainScreenshot = baseDomainScreenshot;
-    this.compareDomainScreenshot = compareDomainScreenshot;
+    this.screenshots = screenshots;
     this.diffImage = diffImage;
     this.diffValue = diffValue;
+  }
+  
+  public void putScreenshot(String type, String fileName) {
+    screenshots.put(type, fileName);
+  }
+  
+  public String getScreenshot(String type) {
+    return screenshots.get(type);
   }
   
   public int getWidth() {
@@ -32,20 +40,12 @@ public class DisplayReport implements Comparable<DisplayReport> {
     this.width = width;
   }
 
-  public String getBaseDomainScreenshot() {
-    return baseDomainScreenshot;
+  public Map<String, String> getScreenshots() {
+    return screenshots;
   }
 
-  public void setBaseDomainScreenshot(String baseDomainScreenshot) {
-    this.baseDomainScreenshot = baseDomainScreenshot;
-  }
-
-  public String getCompareDomainScreenshot() {
-    return compareDomainScreenshot;
-  }
-
-  public void setCompareDomainScreenshot(String compareDomainScreenshot) {
-    this.compareDomainScreenshot = compareDomainScreenshot;
+  public void setScreenshots(Map<String, String> screenshots) {
+    this.screenshots = screenshots;
   }
 
   public String getDiffImage() {

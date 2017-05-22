@@ -63,11 +63,11 @@ public class DiffWorker implements Runnable {
 	
 	String baseFile = pathBaseFolder + "/" + WebsiteScreenshots.generateFileName(screenWidth, "base");	
 	BufferedImage baseImage = ImageIO.read(new File(baseFile));
-	displayReport.setBaseDomainScreenshot(baseFile);
+	displayReport.putScreenshot("base", baseFile);
 	
 	String compareFile = pathCompareFolder + "/" + WebsiteScreenshots.generateFileName(screenWidth, "compare");	
 	BufferedImage compareImage = ImageIO.read(new File(compareFile));
-	displayReport.setCompareDomainScreenshot(compareFile);
+	displayReport.putScreenshot("compare", baseFile);
 	
 	final int highlight = Color.BLUE.getRGB();
 	final int width = baseImage.getWidth() >= compareImage.getWidth()
