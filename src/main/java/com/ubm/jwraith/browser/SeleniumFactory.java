@@ -64,7 +64,7 @@ public class SeleniumFactory {
 	  driver = new PhantomJSDriver(dc);
 	  break;
 	default:
-	  driver = new HtmlUnitDriver(dc);
+	  driver = new HtmlUnitDriver();
       }
     }
     
@@ -88,7 +88,7 @@ public class SeleniumFactory {
 	    browserConfiguration.getDriverExecutable());
 	break;
       default:
-	dc = DesiredCapabilities.htmlUnit();
+	dc = new DesiredCapabilities();
     }
     
     dc.setJavascriptEnabled(true);                

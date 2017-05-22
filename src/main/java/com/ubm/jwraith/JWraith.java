@@ -108,7 +108,7 @@ public class JWraith {
     Path path = Paths.get(filePath);
     try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"))) {
       for (String url : paths) {
-	writer.write(url);
+	writer.write(url + "\n");
       }
     } catch(IOException ex) {
       Logger.getLogger(JWraith.class.getName()).log(Level.SEVERE, null, ex);
