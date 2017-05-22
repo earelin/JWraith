@@ -80,7 +80,7 @@ public class ScreenshotsWorker implements Runnable  {
 	driver.manage().window().setSize(new Dimension(screenWidth, screenHeight.intValue()));
       }
       
-      String fileName = WebsiteScreenshots.generateFileName(browserConfiguration, screenWidth, domainLabel);
+      String fileName = WebsiteScreenshots.generateFileName(screenWidth, domainLabel);
       File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
       try {
 	FileUtils.copyFile(scrFile, new File(folder + "/" + pathFolder + "/" + fileName));

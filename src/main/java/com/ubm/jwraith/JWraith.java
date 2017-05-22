@@ -117,7 +117,7 @@ public class JWraith {
   
   private static void launchMultipleBrowserScreenshots(String domain, String domainLabel, List<String> paths) {
     for (BrowserConfiguration bc : configuration.getMultipleBrowsers()) {
-      websiteScreenshots.process(bc, domain, domainLabel, configuration.getDirectory(), paths);
+      websiteScreenshots.process(bc, domain, bc.getName(), configuration.getDirectory(), paths);
     }
   }
 

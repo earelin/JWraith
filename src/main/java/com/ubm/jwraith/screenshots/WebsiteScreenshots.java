@@ -73,10 +73,6 @@ public class WebsiteScreenshots {
     return folderName;
   }
   
-  public static String generateFileName(BrowserConfiguration bc, int screenWidth, String domainLabel) {
-    return screenWidth + "_" + bc.getName() + "_" + domainLabel + ".png";
-  }
-  
   public static String generateFileName(int screenWidth, String domainLabel) {
     return screenWidth + "_" + domainLabel + ".png";
   }
