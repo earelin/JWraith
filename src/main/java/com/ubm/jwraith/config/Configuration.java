@@ -123,11 +123,11 @@ public class Configuration {
     }
     
     if (configMap.containsKey("thumbnail_width")) {
-      report.setThreshold(Integer.parseInt((String) configMap.get("thumbnail_width")));
+      report.setThumbnailWidth(Integer.parseInt((String) configMap.get("thumbnail_width")));
     }
     
     if (configMap.containsKey("thumbnail_height")) {
-      report.setThreshold(Integer.parseInt((String) configMap.get("thumbnail_height")));
+      report.setThumbnailHeight(Integer.parseInt((String) configMap.get("thumbnail_height")));
     }
   }
   

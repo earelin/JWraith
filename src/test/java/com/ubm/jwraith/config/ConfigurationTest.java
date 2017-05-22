@@ -1,5 +1,6 @@
 package com.ubm.jwraith.config;
 
+import com.ubm.jwraith.reports.ReportConfiguration;
 import java.io.FileNotFoundException;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
@@ -27,42 +28,52 @@ public class ConfigurationTest {
   public void loadedBaseDomain() throws ConfigurationFileException, FileNotFoundException {
     String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
     configuration.read(configurationFile);
-    assertEquals(configuration.getBaseDomain(), "file://src/test/resources/webs/website1");
+    assertEquals("file://src/test/resources/webs/website1", configuration.getBaseDomain());
   }
   
   @Test
   public void loadedCompareDomain() throws ConfigurationFileException, FileNotFoundException {
     String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
     configuration.read(configurationFile);
-    assertEquals(configuration.getCompareDomain(), "file://src/test/resources/webs/website2");
+    assertEquals("file://src/test/resources/webs/website2", configuration.getCompareDomain());
   }
   
   @Test
   public void loadedDirectory() throws ConfigurationFileException, FileNotFoundException {
     String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
     configuration.read(configurationFile);
-    assertEquals(configuration.getDirectory(), "custom_shots");
+    assertEquals("custom_shots", configuration.getDirectory());
   }
   
   @Test
   public void loadedHistoryDirectory() throws ConfigurationFileException, FileNotFoundException {
     String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
     configuration.read(configurationFile);
-    assertEquals(configuration.getHistoryDirectory(), "custom_history_shots");
+    assertEquals("custom_history_shots", configuration.getHistoryDirectory());
   }
   
   @Test
   public void loadedWorkers() throws ConfigurationFileException, FileNotFoundException {
     String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
     configuration.read(configurationFile);
-    assertEquals(configuration.getWorkers(), 4);
+    assertEquals(4, configuration.getWorkers());
   }
   
   @Test
   public void loadedPathsFile() throws ConfigurationFileException, FileNotFoundException {
     String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
     configuration.read(configurationFile);
-    assertEquals(configuration.getPathsFile(), "paths_simple.txt");
+    assertEquals("paths_simple.txt", configuration.getPathsFile());
+  }
+  
+  @Test
+  public void loadedReportConfiguration() throws ConfigurationFileException, FileNotFoundException  {
+    String configurationFile = getClass().getClassLoader().getResource("configuration.yml").getPath();
+    configuration.read(configurationFile);
+    ReportConfiguration reportConfiguration = configuration.getReport();
+    assertEquals(15, reportConfiguration.getThreshold());
+    assertEquals(300, reportConfiguration.getThumbnailWidth());
+    assertEquals(200, reportConfiguration.getThumbnailHeight());    
   }
 
 }

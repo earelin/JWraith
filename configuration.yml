@@ -1,5 +1,5 @@
-browser_name: "firefox"
-#driver_executable: "/usr/local/bin/phantomjs"
+browser_name: "phantomjs"
+driver_executable: "/usr/local/bin/phantomjs"
 
 # selenium grid example
 #browse_name: "firefox"
@@ -10,8 +10,8 @@ directory: "shots"
 history_directory: "shots_history"
 
 domains:
-  base: "http://www.decorex.com/uk"
-  compare: "http://www.cphi.com/europe"
+  base: "http://webserver.dev/enso"
+  compare: "http://webserver.dev/dev"
 
 workers: 4
 
@@ -19,7 +19,7 @@ screen_widths:
   - 320
   - 1280
 
-paths_file: "paths.txt"
+paths_file: "paths_simple.txt"
 
 spider_skips:
   - "^/ajax/.*"
