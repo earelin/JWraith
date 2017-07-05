@@ -62,5 +62,5 @@ jwraith spider configuration.yml
 Once we have the links we can launch the compare process
 
 ```
-jwraith compare configuration.yml
+jwraith capture configuration.yml
 ```
