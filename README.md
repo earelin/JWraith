@@ -13,11 +13,11 @@ jwraith [browsers|capture|history|latest|spider] [configuration file path]
 
 Modes of operation:
 
-browsers: Compares a website among different browsers
-capture: Compares between two websites
-history: Creates a history capture to be compared later
-latest: Compares current website with the last history capture
-spider: Crawls website to get all paths
+browsers: Compares a website among different browsers  
+capture: Compares between two websites  
+history: Creates a history capture to be compared later  
+latest: Compares current website with the last history capture  
+spider: Crawls website to get all paths  
 
 ### Use cases
 
