@@ -34,6 +34,8 @@ directory: "shots"
 domains:
   base: "http://example.com"
   compare: "http://staging.example.com"
+  
+paths_file: "paths.txt"
 
 workers: 4
 
