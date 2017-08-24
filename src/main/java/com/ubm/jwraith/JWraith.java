@@ -63,31 +63,31 @@ public class JWraith {
     
     switch (args[0]) {
       case "spider":
-	paths = crawler.crawl();
-	savePaths(configuration.getPathsFile(), paths);
-	break;
+        paths = crawler.crawl();
+        savePaths(configuration.getPathsFile(), paths);
+        break;
       case "browsers":
-	paths = loadPaths(configuration.getPathsFile());
-	launchMultipleBrowserScreenshots(configuration.getBaseDomain(), "base", paths);
-	break;
+        paths = loadPaths(configuration.getPathsFile());
+        launchMultipleBrowserScreenshots(configuration.getBaseDomain(), "base", paths);
+        break;
       case "capture":
-	paths = loadPaths(configuration.getPathsFile());
-	launchScreenshots(configuration.getBaseDomain(), "base", paths);
-	launchScreenshots(configuration.getCompareDomain(), "compare", paths);
-	ReportData report = launchDiffCalculationCapture(
-		configuration.getDirectory(), configuration.getDirectory(), paths);
-	lauchReportGenerator(report);
-	break;
+        paths = loadPaths(configuration.getPathsFile());
+        launchScreenshots(configuration.getBaseDomain(), "base", paths);
+        launchScreenshots(configuration.getCompareDomain(), "compare", paths);
+        ReportData report = launchDiffCalculationCapture(
+          configuration.getDirectory(), configuration.getDirectory(), paths);
+        lauchReportGenerator(report);
+        break;
       case "history":
-	paths = loadPaths(configuration.getPathsFile());
-	launchScreenshots(configuration.getBaseDomain(), "base", paths);
-	break;
+        paths = loadPaths(configuration.getPathsFile());
+        launchScreenshots(configuration.getBaseDomain(), "base", paths);
+        break;
       case "latest":
-	paths = loadPaths(configuration.getPathsFile());
-	launchScreenshots(configuration.getBaseDomain(), "compare", paths);
-	break;
+        paths = loadPaths(configuration.getPathsFile());
+        launchScreenshots(configuration.getBaseDomain(), "compare", paths);
+        break;
       default:
-	System.out.println("Unsupported operation '" + args[0] + "'.");
+        System.out.println("Unsupported operation '" + args[0] + "'.");
     }
   }
   
@@ -96,7 +96,7 @@ public class JWraith {
     try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
       String[] urls = stream.toArray(String[]::new);
       for (String url : urls) {
-	paths.add(url);
+        paths.add(url);
       }
     } catch (IOException ex) {
       Logger.getLogger(JWraith.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,7 +108,7 @@ public class JWraith {
     Path path = Paths.get(filePath);
     try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"))) {
       for (String url : paths) {
-	writer.write(url + "\n");
+        writer.write(url + "\n");
       }
     } catch(IOException ex) {
       Logger.getLogger(JWraith.class.getName()).log(Level.SEVERE, null, ex);

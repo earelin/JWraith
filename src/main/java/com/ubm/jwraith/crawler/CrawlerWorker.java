@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 /**
  *
@@ -47,19 +46,19 @@ public class CrawlerWorker implements Runnable {
     int waitingTime = 0;
     do {
       if (pendingUrls.isEmpty()) {	
-	Thread.sleep(100);
-	waitingTime++;	
+        Thread.sleep(100);
+        waitingTime++;	
       } else {
-	String url = pendingUrls.take();
-	processUrl(url);
-	if (i == 50) {
-	  driver.quit();
-	  driver = seleniumFactory.getDriver(new BrowserConfiguration());
-	  i = 0;
-	}
-	else {
-	  i++;
-	}
+        String url = pendingUrls.take();
+        processUrl(url);
+        if (i == 50) {
+          driver.quit();
+          driver = seleniumFactory.getDriver(new BrowserConfiguration());
+          i = 0;
+        }
+        else {
+          i++;
+        }
       }
     } while(waitingTime < 30);
     driver.quit();
@@ -75,26 +74,26 @@ public class CrawlerWorker implements Runnable {
     for (WebElement element : elements) {
       String url = element.getAttribute("href");
       if (url != null && url.startsWith(domain)) {
-	int hashIndex = url.indexOf('#');
+        int hashIndex = url.indexOf('#');
 	
-	if (hashIndex != -1) {
-	  url = url.substring(0, hashIndex);
-	}
-	
-	url = url.substring(domain.length());
-	
-	boolean skip = false;
-	for (String skipUrls : spiderSkips) {
-	  if (url.matches(skipUrls)) {
-	    skip = true;
-	    break;
-	  }
-	}		
-	
-	if (!(skip || checkedUrls.containsKey(url) || pendingUrls.contains(url))) {
-	  pendingUrls.add(url);
-	  System.out.println("Added: " + url);
-	}
+        if (hashIndex != -1) {
+          url = url.substring(0, hashIndex);
+        }
+
+        url = url.substring(domain.length());
+
+        boolean skip = false;
+        for (String skipUrls : spiderSkips) {
+          if (url.matches(skipUrls)) {
+            skip = true;
+            break;
+          }
+        }		
+
+        if (!(skip || checkedUrls.containsKey(url) || pendingUrls.contains(url))) {
+          pendingUrls.add(url);
+          System.out.println("Added: " + url);
+        }
       }
     }
   }

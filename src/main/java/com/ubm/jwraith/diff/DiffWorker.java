@@ -42,10 +42,10 @@ public class DiffWorker implements Runnable {
   public void run() {
     while(!pendingPaths.isEmpty()) {
       try {
-	String path = pendingPaths.take();
-	processImagesDiff(path);
+        String path = pendingPaths.take();
+        processImagesDiff(path);
       } catch (InterruptedException ex) {
-	Logger.getLogger(DiffWorker.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(DiffWorker.class.getName()).log(Level.SEVERE, null, ex);
       }
     }
   }
@@ -58,57 +58,57 @@ public class DiffWorker implements Runnable {
     
     for (int screenWidth : screenWidths) {
       try {
-	DisplayReport displayReport = new DisplayReport();
-	displayReport.setWidth(screenWidth);
-	
-	String baseFile = pathBaseFolder + "/" + WebsiteScreenshots.generateFileName(screenWidth, "base");	
-	BufferedImage baseImage = ImageIO.read(new File(baseFile));
-	displayReport.putScreenshot("base", baseFile);
-	
-	String compareFile = pathCompareFolder + "/" + WebsiteScreenshots.generateFileName(screenWidth, "compare");	
-	BufferedImage compareImage = ImageIO.read(new File(compareFile));
-	displayReport.putScreenshot("compare", baseFile);
-	
-	final int highlight = Color.BLUE.getRGB();
-	final int width = baseImage.getWidth() >= compareImage.getWidth()
-		? baseImage.getWidth() : compareImage.getWidth();	
-	final int height = baseImage.getHeight() >= compareImage.getHeight()
-		? baseImage.getHeight() : compareImage.getHeight();
-	final int[] p1 = baseImage.getRGB(0, 0, baseImage.getWidth(), baseImage.getHeight(), null, 0, baseImage.getWidth());
-	final int[] p2 = compareImage.getRGB(0, 0, compareImage.getWidth(), compareImage.getHeight(), null, 0, compareImage.getWidth());
-	
-	BufferedImage diffImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-	
-	int[] diffP = new int[width * height]; 
+        DisplayReport displayReport = new DisplayReport();
+        displayReport.setWidth(screenWidth);
 
-	// compare img1 to img2, pixel by pixel. If different, highlight out pixel...
-	int diffCount = 0;
-	for (int i = 0; i < height; i++) {
-	  for (int j = 0; j < width; j++) {
-	    if (baseImage.getWidth() <= j || compareImage.getWidth() <= j
-		    || baseImage.getHeight() <= i || compareImage.getHeight() <= i
-		    || p1[i * baseImage.getWidth() + j] != p2[i * compareImage.getWidth() + j]) {
-	      diffP[i * width + j] = highlight;
-	      ++diffCount;
-	    } 
-	    else {
-	      Color color = new Color(p1[i * baseImage.getWidth() + j]);
-	      Color transparent = new Color(color.getRed(), color.getGreen(), color.getBlue(), 175);
-	      diffP[i * width + j] = transparent.getRGB();
-	    }
-	  }
-	}
+        String baseFile = pathBaseFolder + "/" + WebsiteScreenshots.generateFileName(screenWidth, "base");	
+        BufferedImage baseImage = ImageIO.read(new File(baseFile));
+        displayReport.putScreenshot("base", baseFile);
 
-	diffImage.setRGB(0, 0, width, height, diffP, 0, width);
-	float diffRatio = (float) diffCount / (width * height);
-	displayReport.setDiffValue(diffRatio);
-	
-	String diffFileName = pathCompareFolder + "/" + WebsiteScreenshots.generateFileName(screenWidth, "diff");	
-	ImageIO.write(diffImage, "png", new File(diffFileName));
-	displayReport.setDiffImage(diffFileName);
-	pageReport.addDisplayResult(displayReport);
+        String compareFile = pathCompareFolder + "/" + WebsiteScreenshots.generateFileName(screenWidth, "compare");	
+        BufferedImage compareImage = ImageIO.read(new File(compareFile));
+        displayReport.putScreenshot("compare", compareFile);
+
+        final int highlight = Color.BLUE.getRGB();
+        final int width = baseImage.getWidth() >= compareImage.getWidth()
+          ? baseImage.getWidth() : compareImage.getWidth();	
+        final int height = baseImage.getHeight() >= compareImage.getHeight()
+          ? baseImage.getHeight() : compareImage.getHeight();
+        final int[] p1 = baseImage.getRGB(0, 0, baseImage.getWidth(), baseImage.getHeight(), null, 0, baseImage.getWidth());
+        final int[] p2 = compareImage.getRGB(0, 0, compareImage.getWidth(), compareImage.getHeight(), null, 0, compareImage.getWidth());
+
+        BufferedImage diffImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        int[] diffP = new int[width * height]; 
+
+        // compare img1 to img2, pixel by pixel. If different, highlight out pixel...
+        int diffCount = 0;
+        for (int i = 0; i < height; i++) {
+          for (int j = 0; j < width; j++) {
+            if (baseImage.getWidth() <= j || compareImage.getWidth() <= j
+              || baseImage.getHeight() <= i || compareImage.getHeight() <= i
+              || p1[i * baseImage.getWidth() + j] != p2[i * compareImage.getWidth() + j]) {
+              diffP[i * width + j] = highlight;
+              ++diffCount;
+            } 
+            else {
+              Color color = new Color(p1[i * baseImage.getWidth() + j]);
+              Color transparent = new Color(color.getRed(), color.getGreen(), color.getBlue(), 175);
+              diffP[i * width + j] = transparent.getRGB();
+            }
+          }
+        }
+
+        diffImage.setRGB(0, 0, width, height, diffP, 0, width);
+        float diffRatio = (float) diffCount / (width * height);
+        displayReport.setDiffValue(diffRatio);
+
+        String diffFileName = pathCompareFolder + "/" + WebsiteScreenshots.generateFileName(screenWidth, "diff");	
+        ImageIO.write(diffImage, "png", new File(diffFileName));
+        displayReport.setDiffImage(diffFileName);
+        pageReport.addDisplayResult(displayReport);
       } catch (Exception ex) {
-	Logger.getLogger(WebsiteScreenshots.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(WebsiteScreenshots.class.getName()).log(Level.SEVERE, null, ex);
       }
     }
     

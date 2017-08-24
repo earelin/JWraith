@@ -66,14 +66,14 @@ public class Configuration {
       Map<String, String> domainsData = (Map) configMap.get("domains");
       
       if (domainsData.containsKey("base")) {
-	baseDomain = domainsData.get("base");
+        baseDomain = domainsData.get("base");
       } 
       else {
-	throw new ConfigurationFileException("Missing base domain key on configuration file.");
+        throw new ConfigurationFileException("Missing base domain key on configuration file.");
       }
     
       if (domainsData.containsKey("compare")) {
-	compareDomain = domainsData.get("compare");
+        compareDomain = domainsData.get("compare");
       }
 
     } else {
@@ -87,7 +87,7 @@ public class Configuration {
     if (configMap.containsKey("screen_widths")) {
       List<String> configDisplays = (List<String>) configMap.get("screen_widths");
       for (String display : configDisplays) {
-	screenWidths.add((Integer.parseInt(display)));
+        screenWidths.add((Integer.parseInt(display)));
       }
     } else {
       throw new ConfigurationFileException("Missing displays key on configuration file.");
@@ -104,10 +104,10 @@ public class Configuration {
     if (configMap.containsKey("multiple_browsers")) {
       List<Map<String, Object>> multipleBrowsersRaw = (List<Map<String, Object>>) configMap.get("multiple_browsers");
       if (multipleBrowsersRaw.size() > 0) {
-	multipleBrowsers = new ArrayList<>(); 
+        multipleBrowsers = new ArrayList<>(); 
       }
       for (Map<String, Object> browserConfig : multipleBrowsersRaw) {
-	multipleBrowsers.add(parseBrowserConfiguration(browserConfig));
+        multipleBrowsers.add(parseBrowserConfiguration(browserConfig));
       }
     }
     

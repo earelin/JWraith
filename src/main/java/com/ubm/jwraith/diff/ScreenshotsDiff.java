@@ -43,15 +43,15 @@ public class ScreenshotsDiff {
     do {
       workersAlive = false;
       for (Thread worker : workers) {
-	if (worker.isAlive()) {
-	  workersAlive = true;
-	  try {
-	    worker.join(100);
-	  } catch (InterruptedException ex) {
-	    Logger.getLogger(ScreenshotsDiff.class.getName()).log(Level.SEVERE, null, ex);
-	  }
-	  break;
-	}
+        if (worker.isAlive()) {
+          workersAlive = true;
+          try {
+            worker.join(100);
+          } catch (InterruptedException ex) {
+            Logger.getLogger(ScreenshotsDiff.class.getName()).log(Level.SEVERE, null, ex);
+          }
+          break;
+        }
       }
     } while (workersAlive);
     

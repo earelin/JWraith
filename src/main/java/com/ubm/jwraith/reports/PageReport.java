@@ -59,8 +59,8 @@ public class PageReport implements Comparable<PageReport> {
   
   public static class Comparators {
     public static final Comparator<PageReport> DIFF_DESC =
-	  (PageReport o1, PageReport o2)
-		  -> Float.compare(o2.getAverangeDiff(), o1.getAverangeDiff());
+      (PageReport o1, PageReport o2)
+        -> Float.compare(o2.getAverangeDiff(), o1.getAverangeDiff());
   }
   
 }

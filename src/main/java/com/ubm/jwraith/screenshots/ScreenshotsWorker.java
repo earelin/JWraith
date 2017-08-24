@@ -76,16 +76,17 @@ public class ScreenshotsWorker implements Runnable  {
       driver.get(domain + path);
       
       if (browserConfiguration.getName() != "phantomjs") {
-	Long screenHeight = (Long) ((JavascriptExecutor) driver).executeScript("return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
-	driver.manage().window().setSize(new Dimension(screenWidth, screenHeight.intValue()));
+        Long screenHeight = (Long) ((JavascriptExecutor) driver)
+          .executeScript("return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
+        driver.manage().window().setSize(new Dimension(screenWidth, screenHeight.intValue()));
       }
       
       String fileName = WebsiteScreenshots.generateFileName(screenWidth, domainLabel);
       File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
       try {
-	FileUtils.copyFile(scrFile, new File(folder + "/" + pathFolder + "/" + fileName));
+        FileUtils.copyFile(scrFile, new File(folder + "/" + pathFolder + "/" + fileName));
       } catch (IOException ex) {
-	Logger.getLogger(WebsiteScreenshots.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(WebsiteScreenshots.class.getName()).log(Level.SEVERE, null, ex);
       }
     }
   }

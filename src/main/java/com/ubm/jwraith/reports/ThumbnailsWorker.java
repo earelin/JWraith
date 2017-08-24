@@ -32,10 +32,10 @@ public class ThumbnailsWorker implements Runnable {
   public void run() {
     while(!pendingPages.isEmpty()) {
       try {
-	PageReport page = pendingPages.take();
-	generatePageThumbnails(page);
+        PageReport page = pendingPages.take();
+        generatePageThumbnails(page);
       } catch (InterruptedException ex) {
-	Logger.getLogger(ThumbnailsWorker.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(ThumbnailsWorker.class.getName()).log(Level.SEVERE, null, ex);
       }
     }
   }
@@ -56,7 +56,7 @@ public class ThumbnailsWorker implements Runnable {
       // Check folder exits
       File thumbnailFileFolder = thumbnailFile.getParentFile();
       if (!thumbnailFileFolder.exists()) {
-	thumbnailFileFolder.mkdirs();
+        thumbnailFileFolder.mkdirs();
       }
       
       BufferedImage image = ImageIO.read(new File(imagePath));
@@ -65,7 +65,7 @@ public class ThumbnailsWorker implements Runnable {
       int imageWidth = image.getWidth();      
       int croppedImageHeight = Math.round(imageWidth * ((float) thumbnailHeight / thumbnailWidth));
       BufferedImage croppedImage = image.getSubimage(0, 0, imageWidth, croppedImageHeight);
-// 
+      
       // Write and rezide on thumbnail.
       BufferedImage thumbnail = new BufferedImage(thumbnailWidth, thumbnailHeight, BufferedImage.TYPE_INT_ARGB);
  

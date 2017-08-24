@@ -45,26 +45,26 @@ public class SeleniumFactory {
     
     if (browserConfiguration.isRemote()) {
       try {
-	URL remoteAddress = new URL(browserConfiguration.getRemoteAddress());
-	WebDriver remoteDrive = new RemoteWebDriver(remoteAddress, dc);
-	driver = new Augmenter().augment(remoteDrive);
+        URL remoteAddress = new URL(browserConfiguration.getRemoteAddress());
+        WebDriver remoteDrive = new RemoteWebDriver(remoteAddress, dc);
+        driver = new Augmenter().augment(remoteDrive);
       } catch (MalformedURLException ex) {
-	Logger.getLogger(SeleniumFactory.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(SeleniumFactory.class.getName()).log(Level.SEVERE, null, ex);
       }      
     } 
     else {
       switch (browserConfiguration.getName()) {
-	case "chrome":
-	  driver = new ChromeDriver(dc);
-	  break;
-	case "firefox":
-	  driver = new FirefoxDriver(dc);
-	  break;
-	case "phantomjs":
-	  driver = new PhantomJSDriver(dc);
-	  break;
-	default:
-	  driver = new HtmlUnitDriver();
+        case "chrome":
+          driver = new ChromeDriver(dc);
+          break;
+        case "firefox":
+          driver = new FirefoxDriver(dc);
+          break;
+        case "phantomjs":
+          driver = new PhantomJSDriver(dc);
+          break;
+        default:
+          driver = new HtmlUnitDriver();
       }
     }
     
@@ -76,19 +76,19 @@ public class SeleniumFactory {
     
     switch (browserConfiguration.getName()) {
       case "chrome":
-	dc = DesiredCapabilities.chrome();
-	break;
+        dc = DesiredCapabilities.chrome();
+        break;
       case "firefox":
-	dc = DesiredCapabilities.firefox();
-	break;
+        dc = DesiredCapabilities.firefox();
+        break;
       case "phantomjs":
-	dc = DesiredCapabilities.phantomjs();
-	dc.setCapability(
-	    PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
-	    browserConfiguration.getDriverExecutable());
-	break;
+        dc = DesiredCapabilities.phantomjs();
+        dc.setCapability(
+        PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
+        browserConfiguration.getDriverExecutable());
+        break;
       default:
-	dc = new DesiredCapabilities();
+        dc = new DesiredCapabilities();
     }
     
     dc.setJavascriptEnabled(true);                

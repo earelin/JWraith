@@ -55,7 +55,7 @@ public class WebsiteReportGenerator {
       Logger.getLogger(WebsiteReportGenerator.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
       if (writer != null) {
-	writer.close();
+        writer.close();
       }
     }
   }
