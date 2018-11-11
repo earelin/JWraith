@@ -3,6 +3,7 @@ package com.ubm.jwraith.browser;
 import com.ubm.jwraith.config.Configuration;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.WebDriver;
@@ -66,6 +67,10 @@ public class SeleniumFactory {
         default:
           driver = new HtmlUnitDriver();
       }
+    }
+    
+    if (driver != null) {
+      driver.manage().timeouts().implicitlyWait(1, TimeUnit.MINUTES);
     }
     
     return driver;

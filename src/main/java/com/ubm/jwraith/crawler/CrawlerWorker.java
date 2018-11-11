@@ -49,6 +49,7 @@ public class CrawlerWorker implements Runnable {
         Thread.sleep(100);
         waitingTime++;	
       } else {
+        
         String url = pendingUrls.take();
         processUrl(url);
         if (i == 50) {
@@ -65,6 +66,7 @@ public class CrawlerWorker implements Runnable {
   }
   
   public void processUrl(String path) throws InterruptedException {
+    
     driver.get(domain + path);
     List<WebElement> elements = driver.findElements(By.tagName("a"));
     
